@@ -10,13 +10,14 @@
 
 class SHT3X : public Sensor {
 public:
-  float temperature;
-  float humidity;
   SHT3X(byte sensorAddress = SHT3X_ADDRESS);
   void begin();
   void getValues();
+  float get(uint8_t Measurement);
 
 private:
+  float temperature;
+  float humidity;
   enum Mode {
     H_REPEATABILITY_CLOCK_STRETCHING = 0x2C06,  // 15ms
     M_REPEATABILITY_CLOCK_STRETCHING = 0x2C0D,  // 6ms

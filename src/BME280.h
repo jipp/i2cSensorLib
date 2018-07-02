@@ -11,14 +11,15 @@
 
 class BME280 : public Sensor {
 public:
-  float temperature;
-  float pressure;
-  float humidity;
   BME280(byte sensorAddress = BME280_ADDRESS, byte sensorIDRegister = BME280_ID_REGISTER, byte sensorID = BME280_ID);
   void begin();
   void getValues();
+  float get(uint8_t Measurement);
 
 private:
+  float temperature;
+  float pressure;
+  float humidity;
   int32_t t_fine;
   enum CompensationParameterRegister {
     REGISTER_DIG_T1_LSB = 0x88,

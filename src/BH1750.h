@@ -10,12 +10,13 @@
 
 class BH1750 : public Sensor {
 public:
-  uint16_t illuminance;
   BH1750(byte sensorAddress = BH1750_ADDRESS);
   void begin();
   void getValues();
+  float get(uint8_t Measurement);
 
 private:
+  uint16_t illuminance;
   enum Mode {
     CONTINUOUSLY_H_RESOLUTION_MODE = 0x10,    // Measurement at 1lx resolution. Measurement time is approx 120ms.
     CONTINUOUSLY_H_RESOLUTION_MODE2 = 0x11,   // Measurement at 0.5lx resolution. Measurement time is approx 120ms.

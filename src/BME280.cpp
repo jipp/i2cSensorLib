@@ -25,6 +25,19 @@ void BME280::getValues() {
   this->humidity = this->getHumidity();
 }
 
+float BME280::get(uint8_t Measurement) {
+  switch(Measurement) {
+      case TEMPERATURE_MEASUREMENT:
+      return this->temperature;
+      case PRESSURE_MEASUREMENT:
+      return this->pressure;
+      case HUMIDITY_MEASUREMENT:
+      return this->humidity;
+      default:
+      return NAN;
+  }
+}
+
 void BME280::readCompensationData() {
   this->compensationParameter.t1 = (readRegister8(this->sensorAddress, REGISTER_DIG_T1_MSB) <<  8) + readRegister8(this->sensorAddress, REGISTER_DIG_T1_LSB);
   this->compensationParameter.t2 = (readRegister8(this->sensorAddress, REGISTER_DIG_T2_MSB) <<  8) + readRegister8(this->sensorAddress, REGISTER_DIG_T2_LSB);

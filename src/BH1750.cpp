@@ -37,3 +37,12 @@ void BH1750::wait(uint16_t Mode) {
     break;
   };
 }
+
+float BH1750::get(uint8_t Measurement) {
+  switch(Measurement) {
+      case ILLUMINANCE_MEASUREMENT:
+      return this->illuminance;
+      default:
+      return NAN;
+  }
+}

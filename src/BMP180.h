@@ -12,13 +12,14 @@
 
 class BMP180 : public Sensor {
 public:
-  float temperature;
-  float pressure;
   BMP180(byte sensorAddress = BMP180_ADDRESS, byte sensorRegister = BMP180_ID_REGISTER, byte sensorID = BMP180_ID);
   void begin();
   void getValues();
+  float get(uint8_t Measurement);
 
 private:
+  float temperature;
+  float pressure;
   enum Mode {
     ULTRA_LOW_POWER = 0,        // 4.5ms
     STANDARD = 1,               // 7.5ms

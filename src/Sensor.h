@@ -12,6 +12,7 @@ public:
   bool isAvailable = false;
   virtual void begin() = 0;
   virtual void getValues() = 0;
+  virtual float get(uint8_t Measurement) = 0;
   bool checkSensorAvailability(byte sensorAddress);
   bool checkSensorAvailability(byte sensorAddress, byte sensorIDRegister, byte value);
   void writeRegister8(byte sensorAddress, byte registerAddress);
@@ -22,6 +23,13 @@ public:
   uint16_t readRegister16(byte sensorAddress);
   uint16_t readRegister16(byte sensorAddress, byte registerAddress);
   uint32_t readRegister24(byte sensorAddress, byte registerAddress);
+  enum MeasurementType {
+    VOLTAGE_MEASUREMENT,
+    HUMIDITY_MEASUREMENT,
+    PRESSURE_MEASUREMENT,
+    TEMPERATURE_MEASUREMENT,
+    ILLUMINANCE_MEASUREMENT
+  };
 };
 
 #endif

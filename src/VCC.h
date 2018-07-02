@@ -6,10 +6,13 @@
 
 class VCC : public Sensor {
 public:
-  float voltage;
   VCC();
   void begin();
   void getValues();
+  float get(uint8_t Measurement);
+
+private:
+  float voltage;
 };
 
 #endif

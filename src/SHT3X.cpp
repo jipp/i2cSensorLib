@@ -25,6 +25,17 @@ void SHT3X::getValues() {
 	this->humidity = 100.0 * ((data[3] * 256.0) + data[4]) / 65535.0;
 }
 
+float SHT3X::get(uint8_t Measurement) {
+  switch(Measurement) {
+      case TEMPERATURE_MEASUREMENT:
+      return this->temperature;
+      case HUMIDITY_MEASUREMENT:
+      return this->humidity;
+      default:
+      return NAN;
+  }
+}
+
 void SHT3X::wait(uint32_t Mode) {
   switch(Mode) {
     case H_REPEATABILITY_CLOCK_STRETCHING:
