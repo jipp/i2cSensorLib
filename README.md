@@ -5,11 +5,11 @@ The library has the goal to provide the same command syntax for different sensor
  * esp8266
 
 ## supported sensors (and compatible)
- [X] BH1750
- [X] BME280
- [X] BMP180
- [ ] CCS811
- [X] SHT3X
+- [X] BH1750
+- [X] BME280
+- [X] BMP180
+- [ ] CCS811
+- [X] SHT3X
 
 ## needed libraries
  * Wire.h
