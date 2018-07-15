@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jipp/i2cSensorLib.svg?branch=master)](https://travis-ci.org/jipp/i2cSensorLib)
+
 # i2cSensorLib
 The library has the goal to provide the same command syntax for different sensors. It can be used by Arduino IDE or PlatformIO.
 
