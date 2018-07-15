@@ -1,0 +1,21 @@
+language: c
+env:
+  - BD=esp8266:esp8266:nodemcuv2:CpuFrequency=80,FlashSize=4M3M
+  - BD=esp8266:esp8266:d1_mini:CpuFrequency=80,FlashSize=4M3M
+before_install:
+  - wget http://downloads.arduino.cc/arduino-1.8.2-linux64.tar.xz
+  - tar xf arduino-1.8.2-linux64.tar.xz
+  - sudo mv arduino-1.8.2 /usr/local/share/arduino
+  - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+install:
+  - ln -s $PWD /usr/local/share/arduino/libraries/
+  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json" --save-prefs
+  - arduino --install-boards esp8266:esp8266
+  - arduino --board $BD --save-prefs
+  - arduino --pref "compiler.warning_level=all" --save-prefs
+script:
+  - arduino --verify --board $BD $PWD/examples/basic/basic.ino
+notifications:
+  email:
+    on_success: change
+    on_failure: change
