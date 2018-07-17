@@ -3,7 +3,9 @@
 #include <Wire.h>
 #include <i2cSensorLib.h>
 
+#if defined(ESP8266)
 ADC_MODE(ADC_VCC);
+#endif
 
 VCC vcc = VCC();
 BH1750 bh1750 = BH1750();
