@@ -25,7 +25,7 @@ private:
     ONE_TIME_H_RESOLUTION_MODE2 = 0x21,       // Measurement at 0.5lx resolution. Measurement time is approx 120ms.
     ONE_TIME_L_RESOLUTION_MODE = 0x23         // Measurement at 4lx resolution. Measurement time is approx 16ms.
   };
-  void wait(uint16 Mode);
+  void wait(uint16_t Mode);
 };
 
 #endif
