@@ -4,7 +4,7 @@ env:
   - BD=esp8266:esp8266:deneric
   - BD=esp8266:esp8266:d1_mini
 before_install:
-  - wget http://downloads.arduino.cc/arduino-1.8.2-linux64.tar.xz
+  - wget http://downloads.arduino.cc/arduino-1.8.9-linux64.tar.xz
   - tar xf arduino-1.8.9-linux64.tar.xz
   - sudo mv arduino-1.8.9 /usr/local/share/arduino
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
