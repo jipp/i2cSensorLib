@@ -1,12 +1,12 @@
 language: c
 env:
-  - BD=esp8266:esp8266:nodemcuv2:CpuFrequency=80,FlashSize=4M3M
-  - BD=esp8266:esp8266:d1_mini:CpuFrequency=80,FlashSize=4M3M
   - BD=arduino:avr:uno
+  - BD=esp8266:esp8266:deneric
+  - BD=esp8266:esp8266:d1_mini
 before_install:
   - wget http://downloads.arduino.cc/arduino-1.8.2-linux64.tar.xz
-  - tar xf arduino-1.8.2-linux64.tar.xz
-  - sudo mv arduino-1.8.2 /usr/local/share/arduino
+  - tar xf arduino-1.8.9-linux64.tar.xz
+  - sudo mv arduino-1.8.9 /usr/local/share/arduino
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
 install:
   - ln -s $PWD /usr/local/share/arduino/libraries/
