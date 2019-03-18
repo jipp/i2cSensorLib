@@ -1,7 +1,7 @@
 language: c
 env:
   - BD=arduino:avr:uno
-  - BD=esp8266:esp8266:deneric
+  - BD=esp8266:esp8266:generic
   - BD=esp8266:esp8266:d1_mini
 before_install:
   - wget http://downloads.arduino.cc/arduino-1.8.9-linux64.tar.xz
