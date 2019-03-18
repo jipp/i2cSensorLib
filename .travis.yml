@@ -1,6 +1,7 @@
 language: c
 env:
   - BD=arduino:avr:uno
+  - BD=esp8266:esp8266:nodemcuv2:CpuFrequency=80,FlashSize=4M3M
   - BD=esp8266:esp8266:generic
   - BD=esp8266:esp8266:d1_mini
 before_install:
