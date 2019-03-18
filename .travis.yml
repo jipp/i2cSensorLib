@@ -2,7 +2,7 @@ language: c
 env:
   - BD=arduino:avr:uno
   - BD=esp8266:esp8266:generic:xtal=80,eesz=4M3M,ip=lm2f,exception=disabled
-  - BD=esp8266:esp8266:d1_mini_pro:xtal=80
+  - BD=esp8266:esp8266:d1_mini_pro:xtal=80,eesz=16M14M
   - BD=esp8266:esp8266:d1_mini:xtal=80,eesz=4M3M,ip=lm2f,exception=disabled
   - BD=esp8266:esp8266:nodemcuv2:xtal=80
   - BD=esp8266:esp8266:nodemcuv2:xtal=80,eesz=4M3M,ip=lm2f,exception=disabled
