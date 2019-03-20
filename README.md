@@ -5,6 +5,7 @@ The library has the goal to provide the same command syntax for different i2c co
 
 ## supported architectures
  * esp8266
+ * esp32
  * avr
 
 ## supported sensors (and compatible)
@@ -13,6 +14,7 @@ The library has the goal to provide the same command syntax for different i2c co
 - [X] BMP180
 - [ ] CCS811
 - [X] SHT3X
+- [X] dummy (simulate values for temperature, humidity andpresure)
 
 ## needed libraries
  * Wire.h
