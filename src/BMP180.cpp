@@ -1,52 +1,60 @@
 #include <BMP180.h>
 
-BMP180::BMP180(byte sensorAddress, byte sensorIDRegister, byte sensorID) {
+BMP180::BMP180(byte sensorAddress, byte sensorIDRegister, byte sensorID)
+{
   this->sensorAddress = sensorAddress;
   this->sensorIDRegister = sensorIDRegister;
   this->sensorID = sensorID;
 }
 
-void BMP180::begin() {
+void BMP180::begin()
+{
   this->isAvailable = this->checkSensorAvailability(this->sensorAddress, this->sensorIDRegister, this->sensorID);
   this->readCalibrationData();
 }
 
-void BMP180::getValues() {
+void BMP180::getValues()
+{
   this->readUncompensatedTemperature();
   this->readUncompensatedPressure();
   this->temperature = calculateTrueTemperature();
   this->pressure = calculateTruePressure();
 }
 
-float BMP180::get(uint8_t Measurement) {
-  switch(Measurement) {
-    case TEMPERATURE_MEASUREMENT:
+float BMP180::get(uint8_t Measurement)
+{
+  switch (Measurement)
+  {
+  case TEMPERATURE_MEASUREMENT:
     return this->temperature;
-    case PRESSURE_MEASUREMENT:
+  case PRESSURE_MEASUREMENT:
     return this->pressure;
-    default:
+  default:
     return NAN;
   }
 }
 
-void BMP180::wait(uint16_t Mode) {
-  switch(Mode) {
-    case ULTRA_LOW_POWER:
+void BMP180::wait(uint16_t Mode)
+{
+  switch (Mode)
+  {
+  case ULTRA_LOW_POWER:
     delayMicroseconds(450);
     break;
-    case STANDARD:
+  case STANDARD:
     delayMicroseconds(750);
     break;
-    case HIGH_RESOLUTION:
+  case HIGH_RESOLUTION:
     delayMicroseconds(13500);
     break;
-    case ULTRA_HIGH_RESOLUTION:
+  case ULTRA_HIGH_RESOLUTION:
     delayMicroseconds(25500);
     break;
   };
 }
 
-void BMP180::readCalibrationData() {
+void BMP180::readCalibrationData()
+{
   this->calibrationCoefficients.ac1 = readRegister16(this->sensorAddress, REGISTER_AC1);
   this->calibrationCoefficients.ac2 = readRegister16(this->sensorAddress, REGISTER_AC2);
   this->calibrationCoefficients.ac3 = readRegister16(this->sensorAddress, REGISTER_AC3);
@@ -60,7 +68,8 @@ void BMP180::readCalibrationData() {
   this->calibrationCoefficients.md = readRegister16(this->sensorAddress, REGISTER_MD);
 }
 
-void BMP180::readUncompensatedTemperature() {
+void BMP180::readUncompensatedTemperature()
+{
   byte MSB;
   byte LSB;
 
@@ -73,7 +82,8 @@ void BMP180::readUncompensatedTemperature() {
   this->UT = (MSB << 8) + LSB;
 }
 
-void BMP180::readUncompensatedPressure() {
+void BMP180::readUncompensatedPressure()
+{
   byte MSB;
   byte LSB;
   byte XLSB;
@@ -88,7 +98,8 @@ void BMP180::readUncompensatedPressure() {
   this->UP = ((MSB << 16) | (LSB << 8) | XLSB) >> (8 - BMP180_MODE);
 }
 
-float BMP180::calculateTrueTemperature() {
+float BMP180::calculateTrueTemperature()
+{
   int32_t X1, X2, T;
 
   X1 = (this->UT - this->calibrationCoefficients.ac6) * this->calibrationCoefficients.ac5 >> 15;
@@ -99,7 +110,8 @@ float BMP180::calculateTrueTemperature() {
   return T / 10.0;
 }
 
-float BMP180::calculateTruePressure() {
+float BMP180::calculateTruePressure()
+{
   int32_t B6, X1, X2, X3, B3, p;
   uint32_t B4, B7;
 
@@ -113,9 +125,12 @@ float BMP180::calculateTruePressure() {
   X3 = ((X1 + X2) + 2) >> 2;
   B4 = calibrationCoefficients.ac4 * (uint32_t)(X3 + 32768) >> 15;
   B7 = ((uint32_t)this->UP - B3) * (50000 >> BMP180_MODE);
-  if (B7 < 0x80000000) {
+  if (B7 < 0x80000000)
+  {
     p = (B7 * 2) / B4;
-  } else {
+  }
+  else
+  {
     p = (B7 / B4) * 2;
   }
   X1 = (p >> 8) * (p >> 8);

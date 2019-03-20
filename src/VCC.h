@@ -4,7 +4,8 @@
 #include <Arduino.h>
 #include <Sensor.h>
 
-class VCC : public Sensor {
+class VCC : public Sensor
+{
 public:
   VCC();
   void begin();

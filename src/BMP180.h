@@ -5,12 +5,13 @@
 #include <Sensor.h>
 #include <Wire.h>
 
-#define BMP180_ADDRESS  0x77
+#define BMP180_ADDRESS 0x77
 #define BMP180_ID_REGISTER 0xD0
 #define BMP180_ID 0x55
-#define BMP180_MODE  ULTRA_HIGH_RESOLUTION
+#define BMP180_MODE ULTRA_HIGH_RESOLUTION
 
-class BMP180 : public Sensor {
+class BMP180 : public Sensor
+{
 public:
   BMP180(byte sensorAddress = BMP180_ADDRESS, byte sensorRegister = BMP180_ID_REGISTER, byte sensorID = BMP180_ID);
   void begin();
@@ -20,20 +21,23 @@ public:
 private:
   float temperature;
   float pressure;
-  enum Mode {
-    ULTRA_LOW_POWER = 0,        // 4.5ms
-    STANDARD = 1,               // 7.5ms
-    HIGH_RESOLUTION = 2,        // 13.5ms
-    ULTRA_HIGH_RESOLUTION = 3   // 25.5ms
+  enum Mode
+  {
+    ULTRA_LOW_POWER = 0,      // 4.5ms
+    STANDARD = 1,             // 7.5ms
+    HIGH_RESOLUTION = 2,      // 13.5ms
+    ULTRA_HIGH_RESOLUTION = 3 // 25.5ms
   };
-  enum Measurement {
-    TEMPERATURE = 0x2E,         // 4.5ms
-    PRESSURE_OSS0 = 0x34,       // 4.5ms
-    PRESSURE_OSS1 = 0x74,       // 7.5ms
-    PRESSURE_OSS2 = 0xB4,       // 13.5ms
-    PRESSURE_OSS3 = 0xF4,       // 25.5ms
+  enum Measurement
+  {
+    TEMPERATURE = 0x2E,   // 4.5ms
+    PRESSURE_OSS0 = 0x34, // 4.5ms
+    PRESSURE_OSS1 = 0x74, // 7.5ms
+    PRESSURE_OSS2 = 0xB4, // 13.5ms
+    PRESSURE_OSS3 = 0xF4, // 25.5ms
   };
-  enum CalibrationCoefficientsRegister {
+  enum CalibrationCoefficientsRegister
+  {
     REGISTER_AC1 = 0xAA,
     REGISTER_AC2 = 0xAC,
     REGISTER_AC3 = 0xAE,
@@ -46,7 +50,8 @@ private:
     REGISTER_MC = 0xBC,
     REGISTER_MD = 0xBE
   };
-  struct CalibrationCoefficients {
+  struct CalibrationCoefficients
+  {
     int16_t ac1;
     int16_t ac2;
     int16_t ac3;

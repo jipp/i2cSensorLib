@@ -5,11 +5,12 @@
 #include <Sensor.h>
 #include <Wire.h>
 
-#define BME280_ADDRESS  0x76
+#define BME280_ADDRESS 0x76
 #define BME280_ID_REGISTER 0xD0
 #define BME280_ID 0x60
 
-class BME280 : public Sensor {
+class BME280 : public Sensor
+{
 public:
   BME280(byte sensorAddress = BME280_ADDRESS, byte sensorIDRegister = BME280_ID_REGISTER, byte sensorID = BME280_ID);
   void begin();
@@ -21,7 +22,8 @@ private:
   float pressure;
   float humidity;
   int32_t t_fine;
-  enum CompensationParameterRegister {
+  enum CompensationParameterRegister
+  {
     REGISTER_DIG_T1_LSB = 0x88,
     REGISTER_DIG_T1_MSB = 0x89,
     REGISTER_DIG_T2_LSB = 0x8A,
@@ -56,7 +58,8 @@ private:
     REGISTER_DIG_H5_MSB = 0xE6,
     REGISTER_DIG_H6 = 0xE7
   };
-  enum BME280Register {
+  enum BME280Register
+  {
     CTRL_HUM = 0xF2,
     CTRL_MEAS = 0xF4,
     CONFIG = 0xF5,
@@ -69,7 +72,8 @@ private:
     HUM_MSB = 0xFD,
     HUM_LSB = 0xFE
   };
-  struct CompensationParameter {
+  struct CompensationParameter
+  {
     uint16_t t1;
     int16_t t2;
     int16_t t3;
@@ -89,12 +93,14 @@ private:
     int16_t h5;
     int8_t h6;
   } compensationParameter;
-  enum SensorMode {
+  enum SensorMode
+  {
     MODE_SLEEP = 0b00,
     MODE_FORCED = 0b01,
     MODE_NORMAL = 0b11
   };
-  enum OversamplingSetting {
+  enum OversamplingSetting
+  {
     SAMPLING_OFF = 0b000,
     SAMPLING_1 = 0b001,
     SAMPLING_2 = 0b010,
@@ -102,14 +108,16 @@ private:
     SAMPLING_8 = 0b100,
     SAMPLING_16 = 0b101
   };
-  enum FilterSetting {
+  enum FilterSetting
+  {
     FILTER_OFF = 0b000,
     FILTER_2 = 0b001,
     FILTER_4 = 0b010,
     FILTER_8 = 0b011,
     FILTER_16 = 0b100
   };
-  enum StandbySetting {
+  enum StandbySetting
+  {
     STANDBY_0_5 = 0b000,
     STANDBY_62_5 = 0b001,
     STANDBY_125 = 0b010,
@@ -119,13 +127,14 @@ private:
     STANDBY_10 = 0b110,
     STANDBY_20 = 0b111
   };
-  struct BME289Settings {
+  struct BME289Settings
+  {
     uint8_t sensorMode = MODE_NORMAL;
-  	uint8_t standbySetting = STANDBY_0_5;
-  	uint8_t filterSetting = FILTER_OFF;
-  	uint8_t temperatureOversamplingSetting = SAMPLING_1;
-  	uint8_t pressureOversamplingSetting = SAMPLING_1;
-  	uint8_t hummidityOversamplingSetting = SAMPLING_1;
+    uint8_t standbySetting = STANDBY_0_5;
+    uint8_t filterSetting = FILTER_OFF;
+    uint8_t temperatureOversamplingSetting = SAMPLING_1;
+    uint8_t pressureOversamplingSetting = SAMPLING_1;
+    uint8_t hummidityOversamplingSetting = SAMPLING_1;
   } bme280Settings;
   void readCompensationData();
   void setStandby(uint8_t t_sb);
