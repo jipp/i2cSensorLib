@@ -1,14 +1,17 @@
 #include <BME280.h>
 
-BME280::BME280(byte sensorAddress, byte sensorIDRegister, byte sensorID) {
+BME280::BME280(byte sensorAddress, byte sensorIDRegister, byte sensorID)
+{
   this->sensorAddress = sensorAddress;
   this->sensorIDRegister = sensorIDRegister;
   this->sensorID = sensorID;
 }
 
-void BME280::begin() {
+void BME280::begin()
+{
   this->isAvailable = this->checkSensorAvailability(this->sensorAddress, this->sensorIDRegister, this->sensorID);
-  if (this->isAvailable) {
+  if (this->isAvailable)
+  {
     this->readCompensationData();
     this->setStandby(bme280Settings.standbySetting);
     this->setFilter(bme280Settings.filterSetting);
@@ -19,29 +22,33 @@ void BME280::begin() {
   }
 }
 
-void BME280::getValues() {
+void BME280::getValues()
+{
   this->temperature = this->getTemperature();
   this->pressure = this->getPressure();
   this->humidity = this->getHumidity();
 }
 
-float BME280::get(uint8_t Measurement) {
-  switch(Measurement) {
-      case TEMPERATURE_MEASUREMENT:
-      return this->temperature;
-      case PRESSURE_MEASUREMENT:
-      return this->pressure;
-      case HUMIDITY_MEASUREMENT:
-      return this->humidity;
-      default:
-      return NAN;
+float BME280::get(uint8_t Measurement)
+{
+  switch (Measurement)
+  {
+  case TEMPERATURE_MEASUREMENT:
+    return this->temperature;
+  case PRESSURE_MEASUREMENT:
+    return this->pressure;
+  case HUMIDITY_MEASUREMENT:
+    return this->humidity;
+  default:
+    return NAN;
   }
 }
 
-void BME280::readCompensationData() {
-  this->compensationParameter.t1 = (readRegister8(this->sensorAddress, REGISTER_DIG_T1_MSB) <<  8) + readRegister8(this->sensorAddress, REGISTER_DIG_T1_LSB);
-  this->compensationParameter.t2 = (readRegister8(this->sensorAddress, REGISTER_DIG_T2_MSB) <<  8) + readRegister8(this->sensorAddress, REGISTER_DIG_T2_LSB);
-  this->compensationParameter.t3 = (readRegister8(this->sensorAddress, REGISTER_DIG_T3_MSB) <<  8) + readRegister8(this->sensorAddress, REGISTER_DIG_T3_LSB);
+void BME280::readCompensationData()
+{
+  this->compensationParameter.t1 = (readRegister8(this->sensorAddress, REGISTER_DIG_T1_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_T1_LSB);
+  this->compensationParameter.t2 = (readRegister8(this->sensorAddress, REGISTER_DIG_T2_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_T2_LSB);
+  this->compensationParameter.t3 = (readRegister8(this->sensorAddress, REGISTER_DIG_T3_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_T3_LSB);
 
   this->compensationParameter.p1 = (readRegister8(this->sensorAddress, REGISTER_DIG_P1_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_P1_LSB);
   this->compensationParameter.p2 = (readRegister8(this->sensorAddress, REGISTER_DIG_P2_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_P2_LSB);
@@ -61,61 +68,68 @@ void BME280::readCompensationData() {
   this->compensationParameter.h6 = readRegister8(this->sensorAddress, REGISTER_DIG_H6);
 }
 
-void BME280::setStandby(uint8_t t_sb) {
+void BME280::setStandby(uint8_t t_sb)
+{
   uint8_t data;
 
   data = readRegister8(this->sensorAddress, CONFIG);
-  data &= ~( (1<<7) | (1<<6) | (1<<5) );
+  data &= ~((1 << 7) | (1 << 6) | (1 << 5));
   data |= (t_sb << 5);
   writeRegister8(this->sensorAddress, CONFIG, data);
 }
 
-void BME280::setFilter(uint8_t filter) {
+void BME280::setFilter(uint8_t filter)
+{
   uint8_t data;
 
   data = readRegister8(this->sensorAddress, CONFIG);
-  data &= ~( (1<<4) | (1<<3) | (1<<2) );
+  data &= ~((1 << 4) | (1 << 3) | (1 << 2));
   data |= (filter << 2);
   writeRegister8(this->sensorAddress, CONFIG, data);
 }
 
-void BME280::setTemperatureOversampling(uint8_t osrs_t) {
+void BME280::setTemperatureOversampling(uint8_t osrs_t)
+{
   uint8_t data;
 
   data = readRegister8(this->sensorAddress, CTRL_MEAS);
-  data &= ~( (1<<7) | (1<<6) | (1<<5) );
+  data &= ~((1 << 7) | (1 << 6) | (1 << 5));
   data |= osrs_t << 5;
-  writeRegister8(this->sensorAddress, CTRL_MEAS , data);
+  writeRegister8(this->sensorAddress, CTRL_MEAS, data);
 }
 
-void BME280::setPressureOversampling(uint8_t osrs_p) {
+void BME280::setPressureOversampling(uint8_t osrs_p)
+{
   uint8_t data;
 
   data = readRegister8(this->sensorAddress, CTRL_MEAS);
-  data &= ~( (1<<4) | (1<<3) | (1<<2) );
+  data &= ~((1 << 4) | (1 << 3) | (1 << 2));
   data |= osrs_p << 2;
-  writeRegister8(this->sensorAddress, CTRL_MEAS , data);
+  writeRegister8(this->sensorAddress, CTRL_MEAS, data);
 }
 
-void BME280::setHumidityOversampling(uint8_t osrs_h) {
+void BME280::setHumidityOversampling(uint8_t osrs_h)
+{
   uint8_t data;
 
   data = readRegister8(this->sensorAddress, CTRL_HUM);
-  data &= ~( (1<<2) | (1<<1) | (1<<0) );
+  data &= ~((1 << 2) | (1 << 1) | (1 << 0));
   data |= osrs_h << 0;
   writeRegister8(this->sensorAddress, CTRL_HUM, data);
 }
 
-void BME280::setMode(uint8_t mode) {
+void BME280::setMode(uint8_t mode)
+{
   uint8_t data;
 
   data = readRegister8(this->sensorAddress, CTRL_MEAS);
-  data &= ~( (1<<1) | (1<<0) );
+  data &= ~((1 << 1) | (1 << 0));
   data |= mode;
   writeRegister8(this->sensorAddress, CTRL_MEAS, data);
 }
 
-float BME280::getHumidity() {
+float BME280::getHumidity()
+{
   uint8_t hum_msb;
   uint8_t hum_lsb;
   int32_t adc_H;
@@ -132,10 +146,11 @@ float BME280::getHumidity() {
   var1 = (var1 < 0 ? 0 : var1);
   var1 = (var1 > 419430400 ? 419430400 : var1);
 
-  return (var1>>12) / 1024.0;
+  return (var1 >> 12) / 1024.0;
 }
 
-float BME280::getTemperature() {
+float BME280::getTemperature()
+{
   uint8_t temp_msb;
   uint8_t temp_lsb;
   uint8_t temp_xlsb;
@@ -150,15 +165,16 @@ float BME280::getTemperature() {
 
   adc_T = ((uint32_t)temp_msb << 12) | ((uint32_t)temp_lsb << 4) | ((temp_xlsb >> 4) & 0x0F);
 
-  var1 = ((((adc_T>>3) - ((int32_t)compensationParameter.t1<<1))) * ((int32_t)compensationParameter.t2)) >> 11;
-  var2 = (((((adc_T>>4) - ((int32_t)compensationParameter.t1)) * ((adc_T>>4) - ((int32_t)compensationParameter.t1))) >> 12) * ((int32_t)compensationParameter.t3)) >> 14;
+  var1 = ((((adc_T >> 3) - ((int32_t)compensationParameter.t1 << 1))) * ((int32_t)compensationParameter.t2)) >> 11;
+  var2 = (((((adc_T >> 4) - ((int32_t)compensationParameter.t1)) * ((adc_T >> 4) - ((int32_t)compensationParameter.t1))) >> 12) * ((int32_t)compensationParameter.t3)) >> 14;
   t_fine = var1 + var2;
   T = (t_fine * 5 + 128) >> 8;
 
   return T / 100.0;
 }
 
-float BME280::getPressure() {
+float BME280::getPressure()
+{
   uint8_t press_msb;
   uint8_t press_lsb;
   uint8_t press_xlsb;
@@ -175,19 +191,19 @@ float BME280::getPressure() {
 
   var1 = ((int64_t)t_fine) - 128000;
   var2 = var1 * var1 * (int64_t)compensationParameter.p6;
-  var2 = var2 + ((var1 * (int64_t)compensationParameter.p5)<<17);
-  var2 = var2 + (((int64_t)compensationParameter.p4)<<35);
-  var1 = ((var1 * var1 * (int64_t)compensationParameter.p3)>>8) + ((var1 * (int64_t)compensationParameter.p2)<<12);
-  var1 = (((((int64_t)1)<<47)+var1))*((int64_t)compensationParameter.p1)>>33;
+  var2 = var2 + ((var1 * (int64_t)compensationParameter.p5) << 17);
+  var2 = var2 + (((int64_t)compensationParameter.p4) << 35);
+  var1 = ((var1 * var1 * (int64_t)compensationParameter.p3) >> 8) + ((var1 * (int64_t)compensationParameter.p2) << 12);
+  var1 = (((((int64_t)1) << 47) + var1)) * ((int64_t)compensationParameter.p1) >> 33;
   if (var1 == 0)
   {
     return 0;
   }
   P = 1048576 - adc_P;
-  P = (((P<<31) - var2)*3125)/var1;
-  var1 = (((int64_t)compensationParameter.p9) * (P>>13) * (P>>13)) >> 25;
+  P = (((P << 31) - var2) * 3125) / var1;
+  var1 = (((int64_t)compensationParameter.p9) * (P >> 13) * (P >> 13)) >> 25;
   var2 = (((int64_t)compensationParameter.p8) * P) >> 19;
-  P = ((P + var1 + var2) >> 8) + (((int64_t)compensationParameter.p7)<<4);
+  P = ((P + var1 + var2) >> 8) + (((int64_t)compensationParameter.p7) << 4);
 
   return P / 256.0 / 100.0;
 }
