@@ -3,7 +3,9 @@
 
 #include <Arduino.h>
 
+#include <Dummy.h>
 #include <VCC.h>
+#include <Memory.h>
 #include <BH1750.h>
 #include <SHT3X.h>
 #include <BMP180.h>

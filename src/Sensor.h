@@ -4,7 +4,8 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-class Sensor {
+class Sensor
+{
 public:
   byte sensorAddress = 0x00;
   byte sensorIDRegister = 0x00;
@@ -23,8 +24,10 @@ public:
   uint16_t readRegister16(byte sensorAddress);
   uint16_t readRegister16(byte sensorAddress, byte registerAddress);
   uint32_t readRegister24(byte sensorAddress, byte registerAddress);
-  enum MeasurementType {
+  enum MeasurementType
+  {
     VOLTAGE_MEASUREMENT,
+    MEMORY_MEASUREMENT,
     HUMIDITY_MEASUREMENT,
     PRESSURE_MEASUREMENT,
     TEMPERATURE_MEASUREMENT,
