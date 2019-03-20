@@ -1,29 +1,34 @@
 #include <VCC.h>
 
-VCC::VCC() {
+VCC::VCC()
+{
 }
 
-void VCC::begin() {
-  #if defined(ESP8266)
+void VCC::begin()
+{
+#if defined(ESP8266)
   this->isAvailable = true;
-  #else
+#else
   this->isAvailable = false;
-  #endif
+#endif
 }
 
-void VCC::getValues() {
-  #if defined(ESP8266)
+void VCC::getValues()
+{
+#if defined(ESP8266)
   this->voltage = ESP.getVcc() / 1000.0;
-  #else
+#else
   this->voltage = NAN;
-  #endif
+#endif
 }
 
-float VCC::get(uint8_t Measurement) {
-  switch (Measurement) {
-    case VOLTAGE_MEASUREMENT:
+float VCC::get(uint8_t Measurement)
+{
+  switch (Measurement)
+  {
+  case VOLTAGE_MEASUREMENT:
     return this->voltage;
-    default:
+  default:
     return NAN;
   }
 }
