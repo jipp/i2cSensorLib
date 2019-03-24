@@ -14,7 +14,7 @@ The library has the goal to provide the same command syntax for different i2c co
 - [X] BMP180
 - [ ] CCS811
 - [X] SHT3X
-- [X] dummy (simulate values for temperature, humidity andpresure)
+- [X] dummy (simulate values for temperature, humidity and pressure)
 
 ## needed libraries
  * Wire.h
