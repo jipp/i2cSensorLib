@@ -17,11 +17,11 @@ BME280 bme280 = BME280();
 
 void publishValues()
 {
-  Serial.println("");
+  Serial.println();
   if (dummy.isAvailable)
   {
     dummy.getValues();
-    Serial.print("Dummy: temperature: ");
+    Serial.print("Dummy:  temperature: ");
     Serial.print(dummy.get(Sensor::TEMPERATURE_MEASUREMENT));
     Serial.print(" humidity: ");
     Serial.print(dummy.get(Sensor::HUMIDITY_MEASUREMENT));
