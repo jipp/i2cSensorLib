@@ -34,6 +34,7 @@ private:
     HEATER_ENABLE = 0x306D,
     HEATRER_DISABLED = 0x3066,
   };
+  void reset();
   void wait(uint32_t Mode);
 };
 

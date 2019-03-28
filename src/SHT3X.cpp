@@ -8,6 +8,8 @@ SHT3X::SHT3X(byte sensorAddress)
 void SHT3X::begin()
 {
   this->isAvailable = this->checkSensorAvailability(this->sensorAddress);
+  if (this->isAvailable)
+    reset();
 }
 
 void SHT3X::getValues()
@@ -41,6 +43,12 @@ float SHT3X::get(uint8_t Measurement)
   default:
     return NAN;
   }
+}
+
+void SHT3X::reset()
+{
+  writeRegister16(this->sensorAddress, SOFT_RESET);
+  delay(1);
 }
 
 void SHT3X::wait(uint32_t Mode)
