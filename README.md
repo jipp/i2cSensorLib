@@ -9,11 +9,11 @@ The library has the goal to provide the same command syntax for different i2c co
  * avr
 
 ## supported sensors (and compatible)
-- [X] BH1750
-- [X] BME280
-- [X] BMP180
-- [ ] CCS811
-- [X] SHT3X
+- [X] BH1750 (digital ambient light intensity sensor)
+- [ ] BME280 (digital barometric pressure, temperature and humidity sensor)
+- [X] BMP180 (digital barometric pressure and temperature sensor)
+- [ ] CCS811 (digital gas sensor for monitoring indoor air quality)
+- [X] SHT3X (digital humidity and temperature sensor)
 - [X] dummy (simulate values for temperature, humidity and presure)
 
 ## needed libraries
