@@ -13,12 +13,7 @@ void BME280::begin()
   if (this->isAvailable)
   {
     this->readCompensationData();
-    this->setStandby(bme280Settings.standbySetting);
-    this->setFilter(bme280Settings.filterSetting);
-    this->setTemperatureOversampling(bme280Settings.temperatureOversamplingSetting);
-    this->setPressureOversampling(bme280Settings.pressureOversamplingSetting);
-    this->setHumidityOversampling(bme280Settings.hummidityOversamplingSetting);
-    this->setMode(bme280Settings.sensorMode);
+    this->setParameter();
   }
 }
 
@@ -41,6 +36,45 @@ float BME280::get(uint8_t Measurement)
     return this->humidity;
   default:
     return NAN;
+  }
+}
+
+void BME280::setParameter()
+{
+  if (BME280_MODE == WEATHER_MONITORING)
+  {
+    this->setMode(MODE_FORCED);
+    this->setStandby(STANDBY_0_5);
+    this->setPressureOversampling(SAMPLING_1);
+    this->setTemperatureOversampling(SAMPLING_1);
+    this->setHumidityOversampling(SAMPLING_1);
+    this->setFilter(FILTER_OFF);
+    // 1 sample / sec
+  } else if (BME280_MODE == HUMIDITY_SENSING)
+  {
+    this->setMode(MODE_FORCED);
+    this->setStandby(STANDBY_0_5);
+    this->setPressureOversampling(SAMPLING_OFF);
+    this->setTemperatureOversampling(SAMPLING_1);
+    this->setHumidityOversampling(SAMPLING_1);
+    this->setFilter(FILTER_OFF);
+    // 1 sample / sec
+  } else if (BME280_MODE == INDOOR_NAVIGATION)
+  {
+    this->setMode(MODE_NORMAL);
+    this->setStandby(STANDBY_0_5);
+    this->setPressureOversampling(SAMPLING_16);
+    this->setTemperatureOversampling(SAMPLING_2);
+    this->setHumidityOversampling(SAMPLING_1);
+    this->setFilter(FILTER_16);
+  }  else if (BME280_MODE == GAMING)
+  {
+    this->setMode(MODE_NORMAL);
+    this->setStandby(STANDBY_0_5);
+    this->setPressureOversampling(SAMPLING_4);
+    this->setTemperatureOversampling(SAMPLING_1);
+    this->setHumidityOversampling(SAMPLING_OFF);
+    this->setFilter(FILTER_16);
   }
 }
 

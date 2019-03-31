@@ -8,6 +8,7 @@
 #define BME280_ADDRESS 0x76
 #define BME280_ID_REGISTER 0xD0
 #define BME280_ID 0x60
+#define BME280_MODE INDOOR_NAVIGATION
 
 class BME280 : public Sensor
 {
@@ -127,15 +128,14 @@ private:
     STANDBY_10 = 0b110,
     STANDBY_20 = 0b111
   };
-  struct BME289Settings
+  enum Mode
   {
-    uint8_t sensorMode = MODE_NORMAL;
-    uint8_t standbySetting = STANDBY_0_5;
-    uint8_t filterSetting = FILTER_OFF;
-    uint8_t temperatureOversamplingSetting = SAMPLING_1;
-    uint8_t pressureOversamplingSetting = SAMPLING_1;
-    uint8_t hummidityOversamplingSetting = SAMPLING_1;
-  } bme280Settings;
+    WEATHER_MONITORING,
+    HUMIDITY_SENSING,
+    INDOOR_NAVIGATION,
+    GAMING
+  };
+   void setParameter();
   void readCompensationData();
   void setStandby(uint8_t t_sb);
   void setFilter(uint8_t filter);
