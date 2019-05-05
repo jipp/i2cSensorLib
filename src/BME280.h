@@ -8,7 +8,7 @@
 #define BME280_ADDRESS 0x76
 #define BME280_ID_REGISTER 0xD0
 #define BME280_ID 0x60
-#define BME280_MODE INDOOR_NAVIGATION
+#define BME280_MODE WEATHER_MONITORING
 
 class BME280 : public Sensor
 {
@@ -22,6 +22,7 @@ private:
   float temperature;
   float pressure;
   float humidity;
+  uint8_t sampleRate;
   int32_t t_fine;
   enum CompensationParameterRegister
   {
@@ -61,7 +62,9 @@ private:
   };
   enum BME280Register
   {
+    RESET = 0xE0,
     CTRL_HUM = 0xF2,
+    STATUS = 0xF3,
     CTRL_MEAS = 0xF4,
     CONFIG = 0xF5,
     PRESS_MSB = 0xF7,
@@ -135,7 +138,8 @@ private:
     INDOOR_NAVIGATION,
     GAMING
   };
-   void setParameter();
+  bool isMeasuring();
+  void setParameter();
   void readCompensationData();
   void setStandby(uint8_t t_sb);
   void setFilter(uint8_t filter);
@@ -143,6 +147,8 @@ private:
   void setPressureOversampling(uint8_t osrs_p);
   void setHumidityOversampling(uint8_t osrs_h);
   void setMode(uint8_t mode);
+  uint8_t getMode();
+  void setSampleRate(uint8_t);
   float getHumidity(void);
   float getTemperature(void);
   float getPressure(void);

@@ -19,6 +19,15 @@ void BME280::begin()
 
 void BME280::getValues()
 {
+  uint8_t mode;
+
+  mode = this->getMode();
+  if (mode == 0 or mode == 1)
+  {
+    this->setMode(MODE_FORCED);
+    while (isMeasuring())
+      delay(1);
+  }
   this->temperature = this->getTemperature();
   this->pressure = this->getPressure();
   this->humidity = this->getHumidity();
@@ -39,27 +48,36 @@ float BME280::get(uint8_t Measurement)
   }
 }
 
+bool BME280::isMeasuring()
+{
+  uint8_t status;
+
+  status = readRegister8(this->sensorAddress, STATUS);
+
+  return (status & (1 << 3));
+}
+
 void BME280::setParameter()
 {
   if (BME280_MODE == WEATHER_MONITORING)
   {
     this->setMode(MODE_FORCED);
-    this->setStandby(STANDBY_0_5);
     this->setPressureOversampling(SAMPLING_1);
     this->setTemperatureOversampling(SAMPLING_1);
     this->setHumidityOversampling(SAMPLING_1);
     this->setFilter(FILTER_OFF);
-    // 1 sample / sec
-  } else if (BME280_MODE == HUMIDITY_SENSING)
+    this->setSampleRate(1);
+  }
+  else if (BME280_MODE == HUMIDITY_SENSING)
   {
     this->setMode(MODE_FORCED);
-    this->setStandby(STANDBY_0_5);
     this->setPressureOversampling(SAMPLING_OFF);
     this->setTemperatureOversampling(SAMPLING_1);
     this->setHumidityOversampling(SAMPLING_1);
     this->setFilter(FILTER_OFF);
-    // 1 sample / sec
-  } else if (BME280_MODE == INDOOR_NAVIGATION)
+    this->setSampleRate(1);
+  }
+  else if (BME280_MODE == INDOOR_NAVIGATION)
   {
     this->setMode(MODE_NORMAL);
     this->setStandby(STANDBY_0_5);
@@ -67,7 +85,8 @@ void BME280::setParameter()
     this->setTemperatureOversampling(SAMPLING_2);
     this->setHumidityOversampling(SAMPLING_1);
     this->setFilter(FILTER_16);
-  }  else if (BME280_MODE == GAMING)
+  }
+  else if (BME280_MODE == GAMING)
   {
     this->setMode(MODE_NORMAL);
     this->setStandby(STANDBY_0_5);
@@ -160,6 +179,20 @@ void BME280::setMode(uint8_t mode)
   data &= ~((1 << 1) | (1 << 0));
   data |= mode;
   writeRegister8(this->sensorAddress, CTRL_MEAS, data);
+}
+
+uint8_t BME280::getMode()
+{
+  uint8_t data;
+
+  data = readRegister8(this->sensorAddress, CTRL_MEAS);
+
+  return (data & 0x03);
+}
+
+void BME280::setSampleRate(uint8_t SAMPLE_RATE)
+{
+  this->sampleRate = SAMPLE_RATE;
 }
 
 float BME280::getHumidity()
