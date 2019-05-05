@@ -10,7 +10,7 @@ The library has the goal to provide the same command syntax for different i2c co
 
 ## supported sensors (and compatible)
 - [X] BH1750 (digital ambient light intensity sensor)
-- [ ] BME280 (digital barometric pressure, temperature and humidity sensor)
+- [X] BME280 (digital barometric pressure, temperature and humidity sensor)
 - [X] BMP180 (digital barometric pressure and temperature sensor)
 - [ ] CCS811 (digital gas sensor for monitoring indoor air quality)
 - [X] SHT3X (digital humidity and temperature sensor)
