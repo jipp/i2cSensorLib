@@ -1,8 +1,8 @@
-#ifndef sht3x_h
-#define sht3x_h
+#ifndef SHT3X_HPP
+#define SHT3X_HPP
 
 #include <Arduino.h>
-#include <Sensor.h>
+#include <Sensor.hpp>
 #include <Wire.h>
 
 #define SHT3X_ADDRESS 0x44

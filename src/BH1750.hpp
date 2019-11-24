@@ -1,8 +1,8 @@
-#ifndef bh1750_h
-#define bh1750_h
+#ifndef BH1750_HPP
+#define BH1750_HPP
 
 #include <Arduino.h>
-#include <Sensor.h>
+#include <Sensor.hpp>
 #include <Wire.h>
 
 #define BH1750_ADDRESS 0x23

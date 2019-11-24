@@ -1,8 +1,8 @@
-#ifndef bmp180_h
-#define bmp180_h
+#ifndef BMP180_HPP
+#define BMP180_HPP
 
 #include <Arduino.h>
-#include <Sensor.h>
+#include <Sensor.hpp>
 #include <Wire.h>
 
 #define BMP180_ADDRESS 0x77

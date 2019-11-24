@@ -1,8 +1,8 @@
-#ifndef dummy_h
-#define dummy_h
+#ifndef DUMMY_HPP
+#define DUMMY_HPP
 
 #include <Arduino.h>
-#include <Sensor.h>
+#include <Sensor.hpp>
 
 class Dummy : public Sensor
 {

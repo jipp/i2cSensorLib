@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 #include <Wire.h>
-#include <i2cSensorLib.h>
+#include <i2cSensorLib.hpp>
 
 #if defined(ESP8266)
 ADC_MODE(ADC_VCC);

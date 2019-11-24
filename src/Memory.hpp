@@ -1,8 +1,8 @@
-#ifndef memory_h
-#define memory_h
+#ifndef MEMORY_HPP
+#define MEMORY_HPP
 
 #include <Arduino.h>
-#include <Sensor.h>
+#include <Sensor.hpp>
 
 class Memory : public Sensor
 {

@@ -1,4 +1,4 @@
-#include <BME280.h>
+#include <BME280.hpp>
 
 BME280::BME280(byte sensorAddress, byte sensorIDRegister, byte sensorID)
 {

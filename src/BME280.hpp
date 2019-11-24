@@ -1,8 +1,8 @@
-#ifndef bme280_h
-#define bme280_h
+#ifndef BME280_HPP
+#define BME280_HPP
 
 #include <Arduino.h>
-#include <Sensor.h>
+#include <Sensor.hpp>
 #include <Wire.h>
 
 #define BME280_ADDRESS 0x76

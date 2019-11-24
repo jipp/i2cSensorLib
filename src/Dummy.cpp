@@ -1,4 +1,4 @@
-#include <Dummy.h>
+#include <Dummy.hpp>
 
 Dummy::Dummy()
 {

@@ -1,4 +1,4 @@
-#include <BMP180.h>
+#include <BMP180.hpp>
 
 BMP180::BMP180(byte sensorAddress, byte sensorIDRegister, byte sensorID)
 {

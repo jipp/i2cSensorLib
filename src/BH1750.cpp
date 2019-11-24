@@ -1,4 +1,4 @@
-#include <BH1750.h>
+#include <BH1750.hpp>
 
 BH1750::BH1750(byte sensorAddress)
 {

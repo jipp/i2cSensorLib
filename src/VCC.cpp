@@ -1,4 +1,4 @@
-#include <VCC.h>
+#include <VCC.hpp>
 
 VCC::VCC()
 {

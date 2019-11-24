@@ -1,4 +1,4 @@
-#include <Sensor.h>
+#include <Sensor.hpp>
 
 bool Sensor::checkSensorAvailability(byte sensorAddress)
 {

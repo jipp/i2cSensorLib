@@ -1,4 +1,4 @@
-#include <SHT3X.h>
+#include <SHT3X.hpp>
 
 SHT3X::SHT3X(byte sensorAddress)
 {

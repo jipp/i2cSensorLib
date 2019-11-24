@@ -1,8 +1,8 @@
-#ifndef vcc_h
-#define vcc_h
+#ifndef VCC_HPP
+#define VCC_HPP
 
 #include <Arduino.h>
-#include <Sensor.h>
+#include <Sensor.hpp>
 
 class VCC : public Sensor
 {
