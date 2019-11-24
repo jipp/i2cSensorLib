@@ -12,9 +12,9 @@ class BH1750 : public Sensor
 {
 public:
   BH1750(byte sensorAddress = BH1750_ADDRESS);
-  void begin();
-  void getValues();
-  float get(uint8_t Measurement);
+  void begin() override;
+  void getValues() override;
+  float get(uint8_t Measurement) override;
 
 private:
   uint16_t illuminance;

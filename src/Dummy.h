@@ -8,9 +8,9 @@ class Dummy : public Sensor
 {
 public:
   Dummy();
-  void begin();
-  void getValues();
-  float get(uint8_t Measurement);
+  void begin() override;
+  void getValues() override;
+  float get(uint8_t Measurement) override;
 
 private:
   float temperature;

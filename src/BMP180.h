@@ -14,9 +14,9 @@ class BMP180 : public Sensor
 {
 public:
   BMP180(byte sensorAddress = BMP180_ADDRESS, byte sensorRegister = BMP180_ID_REGISTER, byte sensorID = BMP180_ID);
-  void begin();
-  void getValues();
-  float get(uint8_t Measurement);
+  void begin() override;
+  void getValues() override;
+  float get(uint8_t Measurement) override;
 
 private:
   float temperature;

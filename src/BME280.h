@@ -14,9 +14,9 @@ class BME280 : public Sensor
 {
 public:
   BME280(byte sensorAddress = BME280_ADDRESS, byte sensorIDRegister = BME280_ID_REGISTER, byte sensorID = BME280_ID);
-  void begin();
-  void getValues();
-  float get(uint8_t Measurement);
+  void begin() override;
+  void getValues() override;
+  float get(uint8_t Measurement) override;
 
 private:
   float temperature;

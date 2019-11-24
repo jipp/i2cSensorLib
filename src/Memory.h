@@ -8,9 +8,9 @@ class Memory : public Sensor
 {
 public:
   Memory();
-  void begin();
-  void getValues();
-  float get(uint8_t Measurement);
+  void begin() override;
+  void getValues() override;
+  float get(uint8_t Measurement) override;
 
 private:
   uint32_t memory;

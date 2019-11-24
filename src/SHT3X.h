@@ -12,9 +12,9 @@ class SHT3X : public Sensor
 {
 public:
   SHT3X(byte sensorAddress = SHT3X_ADDRESS);
-  void begin();
-  void getValues();
-  float get(uint8_t Measurement);
+  void begin() override;
+  void getValues() override;
+  float get(uint8_t Measurement) override;
 
 private:
   float temperature;

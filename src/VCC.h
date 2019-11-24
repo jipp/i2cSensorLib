@@ -8,9 +8,9 @@ class VCC : public Sensor
 {
 public:
   VCC();
-  void begin();
-  void getValues();
-  float get(uint8_t Measurement);
+  void begin() override;
+  void getValues() override;
+  float get(uint8_t Measurement) override;
 
 private:
   float voltage;
