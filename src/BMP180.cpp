@@ -21,13 +21,13 @@ void BMP180::getValues()
   this->pressure = calculateTruePressure();
 }
 
-float BMP180::get(uint8_t Measurement)
+float BMP180::get(Measurement measurement)
 {
-  switch (Measurement)
+  switch (measurement)
   {
-  case TEMPERATURE_MEASUREMENT:
+  case Measurement::TEMPERATURE:
     return this->temperature;
-  case PRESSURE_MEASUREMENT:
+  case Measurement::PRESSURE:
     return this->pressure;
   default:
     return NAN;

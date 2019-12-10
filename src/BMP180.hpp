@@ -16,7 +16,7 @@ public:
   BMP180(byte sensorAddress = BMP180_ADDRESS, byte sensorRegister = BMP180_ID_REGISTER, byte sensorID = BMP180_ID);
   void begin() override;
   void getValues() override;
-  float get(uint8_t Measurement) override;
+  float get(Measurement measurement);
 
 private:
   float temperature;
@@ -28,7 +28,7 @@ private:
     HIGH_RESOLUTION = 2,      // 13.5ms
     ULTRA_HIGH_RESOLUTION = 3 // 25.5ms
   };
-  enum Measurement
+  enum Measurements
   {
     TEMPERATURE = 0x2E,   // 4.5ms
     PRESSURE_OSS0 = 0x34, // 4.5ms

@@ -16,7 +16,7 @@ public:
   BME280(byte sensorAddress = BME280_ADDRESS, byte sensorIDRegister = BME280_ID_REGISTER, byte sensorID = BME280_ID);
   void begin() override;
   void getValues() override;
-  float get(uint8_t Measurement) override;
+  float get(Measurement measurement);
 
 private:
   float temperature;

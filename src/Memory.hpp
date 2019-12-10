@@ -10,10 +10,10 @@ public:
   Memory();
   void begin() override;
   void getValues() override;
-  float get(uint8_t Measurement) override;
+  float get(Measurement measurement) override;
 
 private:
-  uint32_t memory;
+  uint32_t memory = 0;
 };
 
 #endif

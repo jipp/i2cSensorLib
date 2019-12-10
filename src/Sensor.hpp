@@ -4,35 +4,30 @@
 #include <Arduino.h>
 #include <Wire.h>
 
+#include "Measurement.hpp"
+
 class Sensor
 {
 public:
-  byte sensorAddress = 0x00;
-  byte sensorIDRegister = 0x00;
-  byte sensorID = 0x00;
-  bool isAvailable = false;
+  uint8_t sensorAddress = 0x00;
+  uint8_t sensorIDRegister = 0x00;
+  uint8_t sensorID = 0x00;
+  bool isAvailable = false; 
+  const uint8_t Byte = 8;
+  const uint16_t Mask = 0xFF;
   virtual void begin() = 0;
   virtual void getValues() = 0;
-  virtual float get(uint8_t Measurement) = 0;
-  bool checkSensorAvailability(byte sensorAddress);
-  bool checkSensorAvailability(byte sensorAddress, byte sensorIDRegister, byte value);
-  void writeRegister8(byte sensorAddress, byte registerAddress);
-  void writeRegister8(byte sensorAddress, byte registerAddress, byte registerValue);
-  void writeRegister16(byte sensorAddress, uint16_t registerAddress);
-  byte readRegister8(byte sensorAddress);
-  byte readRegister8(byte sensorAddress, byte registerAddress);
-  uint16_t readRegister16(byte sensorAddress);
-  uint16_t readRegister16(byte sensorAddress, byte registerAddress);
-  uint32_t readRegister24(byte sensorAddress, byte registerAddress);
-  enum MeasurementType
-  {
-    VOLTAGE_MEASUREMENT,
-    MEMORY_MEASUREMENT,
-    HUMIDITY_MEASUREMENT,
-    PRESSURE_MEASUREMENT,
-    TEMPERATURE_MEASUREMENT,
-    ILLUMINANCE_MEASUREMENT
-  };
+  virtual float get(Measurement measurement) = 0;
+  bool checkSensorAvailability(uint8_t sensorAddress);
+  bool checkSensorAvailability(uint8_t sensorAddress, uint8_t sensorIDRegister, uint8_t value);
+  void writeRegister8(uint8_t sensorAddress, uint8_t registerAddress);
+  void writeRegister8(uint8_t sensorAddress, uint8_t registerAddress, uint8_t registerValue);
+  void writeRegister16(uint8_t sensorAddress, uint16_t registerAddress);
+  uint8_t readRegister8(uint8_t sensorAddress);
+  uint8_t readRegister8(uint8_t sensorAddress, uint8_t registerAddress);
+  uint16_t readRegister16(uint8_t sensorAddress);
+  uint16_t readRegister16(uint8_t sensorAddress, uint8_t registerAddress);
+  uint32_t readRegister24(uint8_t sensorAddress, uint8_t registerAddress);
 };
 
 #endif

@@ -33,15 +33,15 @@ void BME280::getValues()
   this->humidity = this->getHumidity();
 }
 
-float BME280::get(uint8_t Measurement)
+float BME280::get(Measurement measurement)
 {
-  switch (Measurement)
+  switch (measurement)
   {
-  case TEMPERATURE_MEASUREMENT:
+  case Measurement::TEMPERATURE:
     return this->temperature;
-  case PRESSURE_MEASUREMENT:
+  case Measurement::PRESSURE:
     return this->pressure;
-  case HUMIDITY_MEASUREMENT:
+  case Measurement::HUMIDITY:
     return this->humidity;
   default:
     return NAN;

@@ -14,7 +14,7 @@ public:
   SHT3X(byte sensorAddress = SHT3X_ADDRESS);
   void begin() override;
   void getValues() override;
-  float get(uint8_t Measurement) override;
+  float get(Measurement measurement) override;
 
 private:
   float temperature;

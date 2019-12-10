@@ -10,15 +10,13 @@ public:
   Dummy();
   void begin() override;
   void getValues() override;
-  float get(uint8_t Measurement) override;
+  float get(Measurement measurement) override;
 
 private:
-  float temperature;
-  float pressure;
-  float humidity;
-  float getHumidity(void);
-  float getTemperature(void);
-  float getPressure(void);
+  float temperature = 0.0;
+  float pressure = 0.0;
+  float humidity = 0.0;
+  float illuminance = 0.0;
 };
 
 #endif

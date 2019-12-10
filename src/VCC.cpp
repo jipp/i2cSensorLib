@@ -1,33 +1,32 @@
 #include <VCC.hpp>
 
-VCC::VCC()
-{
-}
+VCC::VCC() = default;
 
 void VCC::begin()
 {
 #if defined(ESP8266)
-  this->isAvailable = true;
+  isAvailable = true;
 #else
-  this->isAvailable = false;
+  isAvailable = false;
 #endif
 }
 
 void VCC::getValues()
 {
+  const float norm = 1024.0;
 #if defined(ESP8266)
-  this->voltage = ESP.getVcc() / 1000.0;
+  voltage = static_cast<float>(ESP.getVcc()) / norm;
 #else
-  this->voltage = NAN;
+  voltage = NAN;
 #endif
 }
 
-float VCC::get(uint8_t Measurement)
+float VCC::get(Measurement measurement)
 {
-  switch (Measurement)
+  switch (measurement)
   {
-  case VOLTAGE_MEASUREMENT:
-    return this->voltage;
+  case Measurement::VOLTAGE:
+    return voltage;
   default:
     return NAN;
   }
