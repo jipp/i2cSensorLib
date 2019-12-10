@@ -16,6 +16,8 @@ public:
 
 private:
   const uint8_t defaultSensorAddress = 0x23;
+  uint8_t sensorAddress = defaultSensorAddress;
+  uint16_t illuminance = 0;
   enum Mode
   {
     Power_Down = 0x00,                      // No active state.
@@ -35,8 +37,6 @@ private:
     L_Resolution_Mode = 16
   };
   const Mode sensorMode = Continuously_H_Resolution_Mode;
-  uint8_t sensorAddress = defaultSensorAddress;
-  uint16_t illuminance = 0;
   void wait(Mode mode);
 };
 

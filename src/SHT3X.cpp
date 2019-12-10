@@ -25,7 +25,7 @@ void SHT3X::getValues()
     for (int i = 0; i < 6; i++)
     {
       data[i] = Wire.read();
-    };
+    }
   }
 
   this->temperature = 175.0 * ((data[0] * 256.0) + data[1]) / 65535.0 - 45.0;
@@ -73,5 +73,5 @@ void SHT3X::wait(uint32_t Mode)
   case L_REPEATABILITY:
     delay(4);
     break;
-  };
+  }
 }

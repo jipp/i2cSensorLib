@@ -50,7 +50,8 @@ void BMP180::wait(uint16_t Mode)
   case ULTRA_HIGH_RESOLUTION:
     delayMicroseconds(25500);
     break;
-  };
+  default:;
+  }
 }
 
 void BMP180::readCalibrationData()

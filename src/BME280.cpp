@@ -1,19 +1,19 @@
 #include <BME280.hpp>
 
-BME280::BME280(byte sensorAddress, byte sensorIDRegister, byte sensorID)
+BME280::BME280() = default;
+
+BME280::BME280(uint8_t address)
 {
-  this->sensorAddress = sensorAddress;
-  this->sensorIDRegister = sensorIDRegister;
-  this->sensorID = sensorID;
+  sensorAddress = address;
 }
 
 void BME280::begin()
 {
-  this->isAvailable = this->checkSensorAvailability(this->sensorAddress, this->sensorIDRegister, this->sensorID);
-  if (this->isAvailable)
+  isAvailable = checkSensorAvailability(sensorAddress, sensorIDRegister, sensorID);
+  if (isAvailable)
   {
-    this->readCompensationData();
-    this->setParameter();
+    readCompensationData();
+    setParameter();
   }
 }
 
@@ -26,7 +26,9 @@ void BME280::getValues()
   {
     this->setMode(MODE_FORCED);
     while (isMeasuring())
+    {
       delay(1);
+    }
   }
   this->temperature = this->getTemperature();
   this->pressure = this->getPressure();
@@ -59,7 +61,7 @@ bool BME280::isMeasuring()
 
 void BME280::setParameter()
 {
-  if (BME280_MODE == WEATHER_MONITORING)
+  if (sensorMode == WEATHER_MONITORING)
   {
     this->setMode(MODE_FORCED);
     this->setPressureOversampling(SAMPLING_1);
@@ -68,7 +70,7 @@ void BME280::setParameter()
     this->setFilter(FILTER_OFF);
     this->setSampleRate(1);
   }
-  else if (BME280_MODE == HUMIDITY_SENSING)
+  else if (sensorMode == HUMIDITY_SENSING)
   {
     this->setMode(MODE_FORCED);
     this->setPressureOversampling(SAMPLING_OFF);
@@ -77,7 +79,7 @@ void BME280::setParameter()
     this->setFilter(FILTER_OFF);
     this->setSampleRate(1);
   }
-  else if (BME280_MODE == INDOOR_NAVIGATION)
+  else if (sensorMode == INDOOR_NAVIGATION)
   {
     this->setMode(MODE_NORMAL);
     this->setStandby(STANDBY_0_5);
@@ -86,7 +88,7 @@ void BME280::setParameter()
     this->setHumidityOversampling(SAMPLING_1);
     this->setFilter(FILTER_16);
   }
-  else if (BME280_MODE == GAMING)
+  else if (sensorMode == GAMING)
   {
     this->setMode(MODE_NORMAL);
     this->setStandby(STANDBY_0_5);

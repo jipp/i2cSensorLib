@@ -5,23 +5,25 @@
 #include <Sensor.hpp>
 #include <Wire.h>
 
-#define BME280_ADDRESS 0x76
-#define BME280_ID_REGISTER 0xD0
-#define BME280_ID 0x60
-#define BME280_MODE WEATHER_MONITORING
-
 class BME280 : public Sensor
 {
 public:
-  BME280(byte sensorAddress = BME280_ADDRESS, byte sensorIDRegister = BME280_ID_REGISTER, byte sensorID = BME280_ID);
+  BME280();
+  explicit BME280(uint8_t address);
   void begin() override;
   void getValues() override;
-  float get(Measurement measurement);
+  float get(Measurement measurement) override;
 
 private:
-  float temperature;
-  float pressure;
-  float humidity;
+  const uint8_t defaultSensorAddress = 0x76;
+  uint8_t sensorAddress = defaultSensorAddress;
+  const uint8_t defaultIDRegister = 0xD0;
+  uint8_t idRegister = defaultIDRegister;
+  const uint8_t defaultID = 0x60;
+  uint8_t id = defaultID;
+  float temperature = 0.0;
+  float pressure = 0.0;
+  float humidity = 0.0;
   uint8_t sampleRate;
   int32_t t_fine;
   enum CompensationParameterRegister
@@ -138,6 +140,7 @@ private:
     INDOOR_NAVIGATION,
     GAMING
   };
+  const Mode sensorMode = WEATHER_MONITORING;
   bool isMeasuring();
   void setParameter();
   void readCompensationData();
@@ -149,9 +152,9 @@ private:
   void setMode(uint8_t mode);
   uint8_t getMode();
   void setSampleRate(uint8_t);
-  float getHumidity(void);
-  float getTemperature(void);
-  float getPressure(void);
+  float getHumidity();
+  float getTemperature();
+  float getPressure();
 };
 
 #endif

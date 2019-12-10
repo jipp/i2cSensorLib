@@ -35,7 +35,7 @@ void BH1750::wait(Mode mode)
   case One_Time_L_Resolution_Mode:
     delayMicroseconds(L_Resolution_Mode);
     break;
-  default:
+  default:;
   }
 }
 
