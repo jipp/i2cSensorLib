@@ -19,21 +19,21 @@ void BH1750::getValues()
   illuminance = readRegister16(sensorAddress);
 }
 
-void BH1750::wait(Mode mode)
+void BH1750::wait(BH1750_Instruction::Opecode instruction)
 {
-  switch (mode)
+  switch (instruction)
   {
-  case Continuously_H_Resolution_Mode:
-  case One_Time_H_Resolution_Mode:
-    delayMicroseconds(H_Resolution_Mode);
+  case BH1750_Instruction::Continuously_H_Resolution_Mode:
+  case BH1750_Instruction::One_Time_H_Resolution_Mode:
+    delayMicroseconds(BH1750_Measurement_Mode::H_Resolution_Mode);
     break;
-  case Continuously_H_Resolution_Mode2:
-  case One_Time_H_Resolution_Mode2:
-    delayMicroseconds(H_Resolution_Mode2);
+  case BH1750_Instruction::Continuously_H_Resolution_Mode2:
+  case BH1750_Instruction::One_Time_H_Resolution_Mode2:
+    delayMicroseconds(BH1750_Measurement_Mode::H_Resolution_Mode2);
     break;
-  case Continuously_L_Resolution_Mode:
-  case One_Time_L_Resolution_Mode:
-    delayMicroseconds(L_Resolution_Mode);
+  case BH1750_Instruction::Continuously_L_Resolution_Mode:
+  case BH1750_Instruction::One_Time_L_Resolution_Mode:
+    delayMicroseconds(BH1750_Measurement_Mode::L_Resolution_Mode);
     break;
   default:;
   }

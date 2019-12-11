@@ -9,7 +9,7 @@ BME280::BME280(uint8_t address)
 
 void BME280::begin()
 {
-  isAvailable = checkSensorAvailability(sensorAddress, sensorIDRegister, sensorID);
+  isAvailable = checkSensorAvailability(sensorAddress, BME280_Register::id, BME280_Type::BME280);
   if (isAvailable)
   {
     readCompensationData();
@@ -24,7 +24,7 @@ void BME280::getValues()
   mode = this->getMode();
   if (mode == 0 or mode == 1)
   {
-    this->setMode(MODE_FORCED);
+    this->setMode(BME280_Mode::Forced_mode);
     while (isMeasuring())
     {
       delay(1);
@@ -54,140 +54,140 @@ bool BME280::isMeasuring()
 {
   uint8_t status;
 
-  status = readRegister8(this->sensorAddress, STATUS);
+  status = readRegister8(this->sensorAddress, BME280_Register::status);
 
   return (status & (1 << 3));
 }
 
 void BME280::setParameter()
 {
-  if (sensorMode == WEATHER_MONITORING)
+  if (sensorMode == BME280_Operation::Weather_Monitoring)
   {
-    this->setMode(MODE_FORCED);
-    this->setPressureOversampling(SAMPLING_1);
-    this->setTemperatureOversampling(SAMPLING_1);
-    this->setHumidityOversampling(SAMPLING_1);
-    this->setFilter(FILTER_OFF);
+    this->setMode(BME280_Mode::Forced_mode);
+    this->setPressureOversampling(BME280_Oversampling::oversampling_1);
+    this->setTemperatureOversampling(BME280_Oversampling::oversampling_1);
+    this->setHumidityOversampling(BME280_Oversampling::oversampling_1);
+    this->setFilter(BME280_Filter::Filter_off);
     this->setSampleRate(1);
   }
-  else if (sensorMode == HUMIDITY_SENSING)
+  else if (sensorMode == BME280_Operation::Humidity_Sensing)
   {
-    this->setMode(MODE_FORCED);
-    this->setPressureOversampling(SAMPLING_OFF);
-    this->setTemperatureOversampling(SAMPLING_1);
-    this->setHumidityOversampling(SAMPLING_1);
-    this->setFilter(FILTER_OFF);
+    this->setMode(BME280_Mode::Forced_mode);
+    this->setPressureOversampling(BME280_Oversampling::oversampling_skipped);
+    this->setTemperatureOversampling(BME280_Oversampling::oversampling_1);
+    this->setHumidityOversampling(BME280_Oversampling::oversampling_1);
+    this->setFilter(BME280_Filter::Filter_off);
     this->setSampleRate(1);
   }
-  else if (sensorMode == INDOOR_NAVIGATION)
+  else if (sensorMode == BME280_Operation::Indoor_Navigation)
   {
-    this->setMode(MODE_NORMAL);
-    this->setStandby(STANDBY_0_5);
-    this->setPressureOversampling(SAMPLING_16);
-    this->setTemperatureOversampling(SAMPLING_2);
-    this->setHumidityOversampling(SAMPLING_1);
-    this->setFilter(FILTER_16);
+    this->setMode(BME280_Mode::Normal_mode);
+    this->setStandby(BME280_t_sb::t_sb_0_5);
+    this->setPressureOversampling(BME280_Oversampling::oversampling_16);
+    this->setTemperatureOversampling(BME280_Oversampling::oversampling_2);
+    this->setHumidityOversampling(BME280_Oversampling::oversampling_1);
+    this->setFilter(BME280_Filter::Filter_16);
   }
-  else if (sensorMode == GAMING)
+  else if (sensorMode == BME280_Operation::Gaming)
   {
-    this->setMode(MODE_NORMAL);
-    this->setStandby(STANDBY_0_5);
-    this->setPressureOversampling(SAMPLING_4);
-    this->setTemperatureOversampling(SAMPLING_1);
-    this->setHumidityOversampling(SAMPLING_OFF);
-    this->setFilter(FILTER_16);
+    this->setMode(BME280_Mode::Normal_mode);
+    this->setStandby(BME280_t_sb::t_sb_0_5);
+    this->setPressureOversampling(BME280_Oversampling::oversampling_4);
+    this->setTemperatureOversampling(BME280_Oversampling::oversampling_1);
+    this->setHumidityOversampling(BME280_Oversampling::oversampling_skipped);
+    this->setFilter(BME280_Filter::Filter_16);
   }
 }
 
 void BME280::readCompensationData()
 {
-  this->compensationParameter.t1 = (readRegister8(this->sensorAddress, REGISTER_DIG_T1_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_T1_LSB);
-  this->compensationParameter.t2 = (readRegister8(this->sensorAddress, REGISTER_DIG_T2_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_T2_LSB);
-  this->compensationParameter.t3 = (readRegister8(this->sensorAddress, REGISTER_DIG_T3_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_T3_LSB);
+  this->compensationParameter.t1 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_T1_MSB) << 8) + readRegister8(this->sensorAddress, BME280_Trimming::dig_T1_LSB);
+  this->compensationParameter.t2 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_T2_MSB) << 8) + readRegister8(this->sensorAddress, BME280_Trimming::dig_T2_LSB);
+  this->compensationParameter.t3 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_T3_MSB) << 8) + readRegister8(this->sensorAddress, BME280_Trimming::dig_T3_LSB);
 
-  this->compensationParameter.p1 = (readRegister8(this->sensorAddress, REGISTER_DIG_P1_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_P1_LSB);
-  this->compensationParameter.p2 = (readRegister8(this->sensorAddress, REGISTER_DIG_P2_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_P2_LSB);
-  this->compensationParameter.p3 = (readRegister8(this->sensorAddress, REGISTER_DIG_P3_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_P3_LSB);
-  this->compensationParameter.p4 = (readRegister8(this->sensorAddress, REGISTER_DIG_P4_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_P4_LSB);
-  this->compensationParameter.p5 = (readRegister8(this->sensorAddress, REGISTER_DIG_P5_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_P5_LSB);
-  this->compensationParameter.p6 = (readRegister8(this->sensorAddress, REGISTER_DIG_P6_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_P6_LSB);
-  this->compensationParameter.p7 = (readRegister8(this->sensorAddress, REGISTER_DIG_P7_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_P7_LSB);
-  this->compensationParameter.p8 = (readRegister8(this->sensorAddress, REGISTER_DIG_P8_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_P8_LSB);
-  this->compensationParameter.p9 = (readRegister8(this->sensorAddress, REGISTER_DIG_P9_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_P9_LSB);
+  this->compensationParameter.p1 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_P1_MSB) << 8) + readRegister8(this->sensorAddress, BME280_Trimming::dig_P1_LSB);
+  this->compensationParameter.p2 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_P2_MSB) << 8) + readRegister8(this->sensorAddress, BME280_Trimming::dig_P2_LSB);
+  this->compensationParameter.p3 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_P3_MSB) << 8) + readRegister8(this->sensorAddress, BME280_Trimming::dig_P3_LSB);
+  this->compensationParameter.p4 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_P4_MSB) << 8) + readRegister8(this->sensorAddress, BME280_Trimming::dig_P4_LSB);
+  this->compensationParameter.p5 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_P5_MSB) << 8) + readRegister8(this->sensorAddress, BME280_Trimming::dig_P5_LSB);
+  this->compensationParameter.p6 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_P6_MSB) << 8) + readRegister8(this->sensorAddress, BME280_Trimming::dig_P6_LSB);
+  this->compensationParameter.p7 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_P7_MSB) << 8) + readRegister8(this->sensorAddress, BME280_Trimming::dig_P7_LSB);
+  this->compensationParameter.p8 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_P8_MSB) << 8) + readRegister8(this->sensorAddress, BME280_Trimming::dig_P8_LSB);
+  this->compensationParameter.p9 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_P9_MSB) << 8) + readRegister8(this->sensorAddress, BME280_Trimming::dig_P9_LSB);
 
-  this->compensationParameter.h1 = readRegister8(this->sensorAddress, REGISTER_DIG_H1);
-  this->compensationParameter.h2 = (readRegister8(this->sensorAddress, REGISTER_DIG_H2_MSB) << 8) + readRegister8(this->sensorAddress, REGISTER_DIG_H2_LSB);
-  this->compensationParameter.h3 = readRegister8(this->sensorAddress, REGISTER_DIG_H3);
-  this->compensationParameter.h4 = (readRegister8(this->sensorAddress, REGISTER_DIG_H4_MSB) << 4) + (readRegister8(this->sensorAddress, REGISTER_DIG_H4_LSB) & 0x0F);
-  this->compensationParameter.h5 = (readRegister8(this->sensorAddress, REGISTER_DIG_H5_MSB) << 4) + ((readRegister8(this->sensorAddress, REGISTER_DIG_H5_LSB) >> 4) & 0x0F);
-  this->compensationParameter.h6 = readRegister8(this->sensorAddress, REGISTER_DIG_H6);
+  this->compensationParameter.h1 = readRegister8(this->sensorAddress, BME280_Trimming::dig_H1);
+  this->compensationParameter.h2 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_H2_MSB) << 8) + readRegister8(this->sensorAddress, BME280_Trimming::dig_H2_LSB);
+  this->compensationParameter.h3 = readRegister8(this->sensorAddress, BME280_Trimming::dig_H3);
+  this->compensationParameter.h4 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_H4_MSB) << 4) + (readRegister8(this->sensorAddress, BME280_Trimming::dig_H4_LSB) & 0x0F);
+  this->compensationParameter.h5 = (readRegister8(this->sensorAddress, BME280_Trimming::dig_H5_MSB) << 4) + ((readRegister8(this->sensorAddress, BME280_Trimming::dig_H5_LSB) >> 4) & 0x0F);
+  this->compensationParameter.h6 = readRegister8(this->sensorAddress, BME280_Trimming::dig_H6);
 }
 
 void BME280::setStandby(uint8_t t_sb)
 {
   uint8_t data;
 
-  data = readRegister8(this->sensorAddress, CONFIG);
+  data = readRegister8(this->sensorAddress, BME280_Register::config);
   data &= ~((1 << 7) | (1 << 6) | (1 << 5));
   data |= (t_sb << 5);
-  writeRegister8(this->sensorAddress, CONFIG, data);
+  writeRegister8(this->sensorAddress, BME280_Register::config, data);
 }
 
 void BME280::setFilter(uint8_t filter)
 {
   uint8_t data;
 
-  data = readRegister8(this->sensorAddress, CONFIG);
+  data = readRegister8(this->sensorAddress, BME280_Register::config);
   data &= ~((1 << 4) | (1 << 3) | (1 << 2));
   data |= (filter << 2);
-  writeRegister8(this->sensorAddress, CONFIG, data);
+  writeRegister8(this->sensorAddress, BME280_Register::config, data);
 }
 
 void BME280::setTemperatureOversampling(uint8_t osrs_t)
 {
   uint8_t data;
 
-  data = readRegister8(this->sensorAddress, CTRL_MEAS);
+  data = readRegister8(this->sensorAddress, BME280_Register::ctrl_meas);
   data &= ~((1 << 7) | (1 << 6) | (1 << 5));
   data |= osrs_t << 5;
-  writeRegister8(this->sensorAddress, CTRL_MEAS, data);
+  writeRegister8(this->sensorAddress, BME280_Register::ctrl_meas, data);
 }
 
 void BME280::setPressureOversampling(uint8_t osrs_p)
 {
   uint8_t data;
 
-  data = readRegister8(this->sensorAddress, CTRL_MEAS);
+  data = readRegister8(this->sensorAddress, BME280_Register::ctrl_meas);
   data &= ~((1 << 4) | (1 << 3) | (1 << 2));
   data |= osrs_p << 2;
-  writeRegister8(this->sensorAddress, CTRL_MEAS, data);
+  writeRegister8(this->sensorAddress, BME280_Register::ctrl_meas, data);
 }
 
 void BME280::setHumidityOversampling(uint8_t osrs_h)
 {
   uint8_t data;
 
-  data = readRegister8(this->sensorAddress, CTRL_HUM);
+  data = readRegister8(this->sensorAddress, BME280_Register::ctrl_hum);
   data &= ~((1 << 2) | (1 << 1) | (1 << 0));
   data |= osrs_h << 0;
-  writeRegister8(this->sensorAddress, CTRL_HUM, data);
+  writeRegister8(this->sensorAddress, BME280_Register::ctrl_hum, data);
 }
 
 void BME280::setMode(uint8_t mode)
 {
   uint8_t data;
 
-  data = readRegister8(this->sensorAddress, CTRL_MEAS);
+  data = readRegister8(this->sensorAddress, BME280_Register::ctrl_meas);
   data &= ~((1 << 1) | (1 << 0));
   data |= mode;
-  writeRegister8(this->sensorAddress, CTRL_MEAS, data);
+  writeRegister8(this->sensorAddress, BME280_Register::ctrl_meas, data);
 }
 
 uint8_t BME280::getMode()
 {
   uint8_t data;
 
-  data = readRegister8(this->sensorAddress, CTRL_MEAS);
+  data = readRegister8(this->sensorAddress, BME280_Register::ctrl_meas);
 
   return (data & 0x03);
 }
@@ -204,8 +204,8 @@ float BME280::getHumidity()
   int32_t adc_H;
   uint32_t var1;
 
-  hum_msb = readRegister8(this->sensorAddress, HUM_MSB);
-  hum_lsb = readRegister8(this->sensorAddress, HUM_LSB);
+  hum_msb = readRegister8(this->sensorAddress, BME280_Register::hum_msb);
+  hum_lsb = readRegister8(this->sensorAddress, BME280_Register::hum_lsb);
 
   adc_H = (hum_msb << 8) + (hum_lsb);
 
@@ -228,9 +228,9 @@ float BME280::getTemperature()
   int32_t var2;
   int32_t T;
 
-  temp_msb = readRegister8(this->sensorAddress, TEMP_MSB);
-  temp_lsb = readRegister8(this->sensorAddress, TEMP_LSB);
-  temp_xlsb = readRegister8(this->sensorAddress, TEMP_XLSB);
+  temp_msb = readRegister8(this->sensorAddress, BME280_Register::temp_msb);
+  temp_lsb = readRegister8(this->sensorAddress, BME280_Register::temp_lsb);
+  temp_xlsb = readRegister8(this->sensorAddress, BME280_Register::temp_xlsb);
 
   adc_T = ((uint32_t)temp_msb << 12) | ((uint32_t)temp_lsb << 4) | ((temp_xlsb >> 4) & 0x0F);
 
@@ -252,9 +252,9 @@ float BME280::getPressure()
   int64_t var2;
   int64_t P;
 
-  press_msb = readRegister8(this->sensorAddress, PRESS_MSB);
-  press_lsb = readRegister8(this->sensorAddress, PRESS_LSB);
-  press_xlsb = readRegister8(this->sensorAddress, PRESS_XLSB);
+  press_msb = readRegister8(this->sensorAddress, BME280_Register::press_msb);
+  press_lsb = readRegister8(this->sensorAddress,BME280_Register:: press_lsb);
+  press_xlsb = readRegister8(this->sensorAddress, BME280_Register::press_xlsb);
 
   adc_P = ((uint32_t)press_msb << 12) | ((uint32_t)press_lsb << 4) | ((press_xlsb >> 4) & 0x0F);
 

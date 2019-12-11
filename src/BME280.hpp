@@ -5,6 +5,147 @@
 #include <Sensor.hpp>
 #include <Wire.h>
 
+class BME280_Register
+{
+public:
+  enum Value
+  {
+    id = 0xD0,
+    reset = 0xE0,
+    ctrl_hum = 0xF2,
+    status = 0xF3,
+    ctrl_meas = 0xF4,
+    config = 0xF5,
+    press_msb = 0xF7,
+    press_lsb = 0xF8,
+    press_xlsb = 0xF9,
+    temp_msb = 0xFA,
+    temp_lsb = 0xFB,
+    temp_xlsb = 0xFC,
+    hum_msb = 0xFD,
+    hum_lsb = 0xFE
+  };
+};
+
+class BME280_Mode
+{
+public:
+  enum Value
+  {
+    Sleep_mode = 0b00,
+    Forced_mode = 0b01,
+    Normal_mode = 0b11
+  };
+};
+
+class BME280_Oversampling
+{
+public:
+  enum Value
+  {
+    oversampling_skipped = 0b000,
+    oversampling_1 = 0b001,
+    oversampling_2 = 0b010,
+    oversampling_4 = 0b011,
+    oversampling_8 = 0b100,
+    oversampling_16 = 0b101
+  };
+};
+
+class BME280_Filter
+{
+public:
+  enum Filter_Coefficient
+  {
+    Filter_off = 0b000,
+    Filter_2 = 0b001,
+    Filter_4 = 0b010,
+    Filter_8 = 0b011,
+    Filter_16 = 0b100
+  };
+};
+
+class BME280_Trimming
+{
+public:
+  enum Register
+  {
+    dig_T1_LSB = 0x88,
+    dig_T1_MSB = 0x89,
+    dig_T2_LSB = 0x8A,
+    dig_T2_MSB = 0x8B,
+    dig_T3_LSB = 0x8C,
+    dig_T3_MSB = 0x8D,
+    dig_P1_LSB = 0x8E,
+    dig_P1_MSB = 0x8F,
+    dig_P2_LSB = 0x90,
+    dig_P2_MSB = 0x91,
+    dig_P3_LSB = 0x92,
+    dig_P3_MSB = 0x93,
+    dig_P4_LSB = 0x94,
+    dig_P4_MSB = 0x95,
+    dig_P5_LSB = 0x96,
+    dig_P5_MSB = 0x97,
+    dig_P6_LSB = 0x98,
+    dig_P6_MSB = 0x99,
+    dig_P7_LSB = 0x9A,
+    dig_P7_MSB = 0x9B,
+    dig_P8_LSB = 0x9C,
+    dig_P8_MSB = 0x9D,
+    dig_P9_LSB = 0x9E,
+    dig_P9_MSB = 0x9F,
+    dig_H1 = 0xA1,
+    dig_H2_LSB = 0xE1,
+    dig_H2_MSB = 0xE2,
+    dig_H3 = 0xE3,
+    dig_H4_MSB = 0xE4,
+    dig_H4_LSB = 0xE5,
+    dig_H5_LSB = 0xE5,
+    dig_H5_MSB = 0xE6,
+    dig_H6 = 0xE7
+  };
+};
+
+class BME280_Operation
+{
+public:
+  enum Mode
+  {
+    Weather_Monitoring,
+    Humidity_Sensing,
+    Indoor_Navigation,
+    Gaming
+  };
+};
+
+class BME280_t_sb
+{
+public:
+  enum Settings
+  {
+    t_sb_0_5 = 0b000,
+    t_sb_62_5 = 0b001,
+    t_sb_125 = 0b010,
+    t_sb_250 = 0b011,
+    t_sb_500 = 0b100,
+    t_sb_1000 = 0b101,
+    t_sb_10 = 0b110,
+    t_sb_20 = 0b111
+  };
+};
+
+class BME280_Type
+{
+public:
+  enum Type
+  {
+    BME280 = 0x60,
+    BMP280_samples1 = 0x56,
+    BMP280_samples2 = 0x57,
+    BMP280 = 0x58
+  };
+};
+
 class BME280 : public Sensor
 {
 public:
@@ -17,67 +158,11 @@ public:
 private:
   const uint8_t defaultSensorAddress = 0x76;
   uint8_t sensorAddress = defaultSensorAddress;
-  const uint8_t defaultIDRegister = 0xD0;
-  uint8_t idRegister = defaultIDRegister;
-  const uint8_t defaultID = 0x60;
-  uint8_t id = defaultID;
   float temperature = 0.0;
   float pressure = 0.0;
   float humidity = 0.0;
   uint8_t sampleRate;
   int32_t t_fine;
-  enum CompensationParameterRegister
-  {
-    REGISTER_DIG_T1_LSB = 0x88,
-    REGISTER_DIG_T1_MSB = 0x89,
-    REGISTER_DIG_T2_LSB = 0x8A,
-    REGISTER_DIG_T2_MSB = 0x8B,
-    REGISTER_DIG_T3_LSB = 0x8C,
-    REGISTER_DIG_T3_MSB = 0x8D,
-    REGISTER_DIG_P1_LSB = 0x8E,
-    REGISTER_DIG_P1_MSB = 0x8F,
-    REGISTER_DIG_P2_LSB = 0x90,
-    REGISTER_DIG_P2_MSB = 0x91,
-    REGISTER_DIG_P3_LSB = 0x92,
-    REGISTER_DIG_P3_MSB = 0x93,
-    REGISTER_DIG_P4_LSB = 0x94,
-    REGISTER_DIG_P4_MSB = 0x95,
-    REGISTER_DIG_P5_LSB = 0x96,
-    REGISTER_DIG_P5_MSB = 0x97,
-    REGISTER_DIG_P6_LSB = 0x98,
-    REGISTER_DIG_P6_MSB = 0x99,
-    REGISTER_DIG_P7_LSB = 0x9A,
-    REGISTER_DIG_P7_MSB = 0x9B,
-    REGISTER_DIG_P8_LSB = 0x9C,
-    REGISTER_DIG_P8_MSB = 0x9D,
-    REGISTER_DIG_P9_LSB = 0x9E,
-    REGISTER_DIG_P9_MSB = 0x9F,
-    REGISTER_DIG_H1 = 0xA1,
-    REGISTER_DIG_H2_LSB = 0xE1,
-    REGISTER_DIG_H2_MSB = 0xE2,
-    REGISTER_DIG_H3 = 0xE3,
-    REGISTER_DIG_H4_MSB = 0xE4,
-    REGISTER_DIG_H4_LSB = 0xE5,
-    REGISTER_DIG_H5_LSB = 0xE5,
-    REGISTER_DIG_H5_MSB = 0xE6,
-    REGISTER_DIG_H6 = 0xE7
-  };
-  enum BME280Register
-  {
-    RESET = 0xE0,
-    CTRL_HUM = 0xF2,
-    STATUS = 0xF3,
-    CTRL_MEAS = 0xF4,
-    CONFIG = 0xF5,
-    PRESS_MSB = 0xF7,
-    PRESS_LSB = 0xF8,
-    PRESS_XLSB = 0xF9,
-    TEMP_MSB = 0xFA,
-    TEMP_LSB = 0xFB,
-    TEMP_XLSB = 0xFC,
-    HUM_MSB = 0xFD,
-    HUM_LSB = 0xFE
-  };
   struct CompensationParameter
   {
     uint16_t t1;
@@ -99,48 +184,7 @@ private:
     int16_t h5;
     int8_t h6;
   } compensationParameter;
-  enum SensorMode
-  {
-    MODE_SLEEP = 0b00,
-    MODE_FORCED = 0b01,
-    MODE_NORMAL = 0b11
-  };
-  enum OversamplingSetting
-  {
-    SAMPLING_OFF = 0b000,
-    SAMPLING_1 = 0b001,
-    SAMPLING_2 = 0b010,
-    SAMPLING_4 = 0b011,
-    SAMPLING_8 = 0b100,
-    SAMPLING_16 = 0b101
-  };
-  enum FilterSetting
-  {
-    FILTER_OFF = 0b000,
-    FILTER_2 = 0b001,
-    FILTER_4 = 0b010,
-    FILTER_8 = 0b011,
-    FILTER_16 = 0b100
-  };
-  enum StandbySetting
-  {
-    STANDBY_0_5 = 0b000,
-    STANDBY_62_5 = 0b001,
-    STANDBY_125 = 0b010,
-    STANDBY_250 = 0b011,
-    STANDBY_500 = 0b100,
-    STANDBY_1000 = 0b101,
-    STANDBY_10 = 0b110,
-    STANDBY_20 = 0b111
-  };
-  enum Mode
-  {
-    WEATHER_MONITORING,
-    HUMIDITY_SENSING,
-    INDOOR_NAVIGATION,
-    GAMING
-  };
-  const Mode sensorMode = WEATHER_MONITORING;
+  const BME280_Operation::Mode sensorMode = BME280_Operation::Weather_Monitoring;
   bool isMeasuring();
   void setParameter();
   void readCompensationData();
