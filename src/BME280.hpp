@@ -10,16 +10,16 @@ class BME280_Register
 public:
   enum Value
   {
-    id = 0xD0,
-    reset = 0xE0,
-    ctrl_hum = 0xF2,
-    status = 0xF3,
-    ctrl_meas = 0xF4,
-    config = 0xF5,
-    press_msb = 0xF7,
+    id = 0xD0,        // The "id" register contains the chip identification number chip_id[7:0], which is 0x60. This number can be read as soon as the device finished the power-on-reset.
+    reset = 0xE0,     // The "reset" register contains the soft reset word reset[7:0]. If the value 0xB6 is written to the register, the device is reset using the complete power-on-reset procedure. Writing other values than 0xB6 has no effect. The readout value is always 0x00.
+    ctrl_hum = 0xF2,  // The "ctrl_hum" register sets the humidity data acquisition options of the device. Changes to this register only become effective after a write operation to "ctrl_meas".
+    status = 0xF3,    // The "status" register contains two bits which indicate the status of the device. Bit 3 measuring[0]. Bit 0 im_update[0].
+    ctrl_meas = 0xF4, // The "ctrl_meas" register sets the pressure and temperature data acquisition options of the device. The register needs to be written after changing "ctrl_hum" for the changes to become effective.
+    config = 0xF5,    // The "config" register sets the rate, filter and interface options of the device. Writes to the "config" register in normal mode may be ignored. In sleep mode writes are not ignored.
+    press_msb = 0xF7, // The "press" register contains the raw pressure measurement output data up[19:0].
     press_lsb = 0xF8,
     press_xlsb = 0xF9,
-    temp_msb = 0xFA,
+    temp_msb = 0xFA, // The "temp" register contains the raw temperature measurement output data ut[19:0].
     temp_lsb = 0xFB,
     temp_xlsb = 0xFC,
     hum_msb = 0xFD,
@@ -30,7 +30,7 @@ public:
 class BME280_Mode
 {
 public:
-  enum Value
+  enum Mode
   {
     Sleep_mode = 0b00,
     Forced_mode = 0b01,
@@ -161,29 +161,28 @@ private:
   float temperature = 0.0;
   float pressure = 0.0;
   float humidity = 0.0;
-  uint8_t sampleRate;
-  int32_t t_fine;
-  struct CompensationParameter
+  int32_t t_fine = 0;
+  struct Trimming
   {
-    uint16_t t1;
-    int16_t t2;
-    int16_t t3;
-    uint16_t p1;
-    int16_t p2;
-    int16_t p3;
-    int16_t p4;
-    int16_t p5;
-    int16_t p6;
-    int16_t p7;
-    int16_t p8;
-    int16_t p9;
-    uint8_t h1;
-    int16_t h2;
-    uint8_t h3;
-    int16_t h4;
-    int16_t h5;
-    int8_t h6;
-  } compensationParameter;
+    uint16_t t1 = 0;
+    int16_t t2 = 0;
+    int16_t t3 = 0;
+    uint16_t p1 = 0;
+    int16_t p2 = 0;
+    int16_t p3 = 0;
+    int16_t p4 = 0;
+    int16_t p5 = 0;
+    int16_t p6 = 0;
+    int16_t p7 = 0;
+    int16_t p8 = 0;
+    int16_t p9 = 0;
+    uint8_t h1 = 0;
+    int16_t h2 = 0;
+    uint8_t h3 = 0;
+    int16_t h4 = 0;
+    int16_t h5 = 0;
+    int8_t h6 = 0;
+  } trimming;
   const BME280_Operation::Mode sensorMode = BME280_Operation::Weather_Monitoring;
   bool isMeasuring();
   void setParameter();
@@ -193,9 +192,8 @@ private:
   void setTemperatureOversampling(uint8_t osrs_t);
   void setPressureOversampling(uint8_t osrs_p);
   void setHumidityOversampling(uint8_t osrs_h);
-  void setMode(uint8_t mode);
-  uint8_t getMode();
-  void setSampleRate(uint8_t);
+  void setMode(BME280_Mode::Mode mode);
+  BME280_Mode::Mode getMode();
   float getHumidity();
   float getTemperature();
   float getPressure();
