@@ -117,7 +117,7 @@ void BME280::readCompensationData()
   trimming.h2 = (readRegister8(sensorAddress, BME280_Trimming::dig_H2_MSB) << 8U) + readRegister8(sensorAddress, BME280_Trimming::dig_H2_LSB);
   trimming.h3 = readRegister8(sensorAddress, BME280_Trimming::dig_H3);
   trimming.h4 = (readRegister8(sensorAddress, BME280_Trimming::dig_H4_MSB) << 4U) + (readRegister8(sensorAddress, BME280_Trimming::dig_H4_LSB) & 0x0FU);
-  trimming.h5 = (readRegister8(sensorAddress, BME280_Trimming::dig_H5_MSB) << 4U) + (static_cast<uint8>(readRegister8(sensorAddress, BME280_Trimming::dig_H5_LSB) >> 4U) & 0x0FU);
+  trimming.h5 = (readRegister8(sensorAddress, BME280_Trimming::dig_H5_MSB) << 4U) + (static_cast<uint8_t>(readRegister8(sensorAddress, BME280_Trimming::dig_H5_LSB) >> 4U) & 0x0FU);
   trimming.h6 = readRegister8(sensorAddress, BME280_Trimming::dig_H6);
 }
 
