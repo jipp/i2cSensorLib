@@ -32,7 +32,7 @@ void publishValues()
     Serial.print(" humidity: ");
     Serial.print(dummy.get(Measurement::HUMIDITY));
     Serial.print(" pressure: ");
-    Serial.println(dummy.get(Measurement::PRESSURE));
+    Serial.print(dummy.get(Measurement::PRESSURE));
     Serial.print(" illuminance: ");
     Serial.println(dummy.get(Measurement::ILLUMINANCE));
   }
