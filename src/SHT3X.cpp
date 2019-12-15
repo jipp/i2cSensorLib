@@ -19,7 +19,7 @@ void SHT3X::getValues()
   writeRegister16(this->sensorAddress, SHT3X_MODE);
   wait(SHT3X_MODE);
 
-  Wire.requestFrom((int)this->sensorAddress, 6);
+  Wire.requestFrom(static_cast<int>(sensorAddress), 6);
   if (Wire.available() == 6)
   {
     for (int i = 0; i < 6; i++)

@@ -124,8 +124,8 @@ float BMP180::calculateTruePressure()
   X1 = calibrationCoefficients.ac3 * B6 >> 13;
   X2 = (calibrationCoefficients.b1 * (B6 * B6 >> 12)) >> 16;
   X3 = ((X1 + X2) + 2) >> 2;
-  B4 = calibrationCoefficients.ac4 * (uint32_t)(X3 + 32768) >> 15;
-  B7 = ((uint32_t)this->UP - B3) * (50000 >> BMP180_MODE);
+  B4 = calibrationCoefficients.ac4 * static_cast<uint32_t>(X3 + 32768) >> 15;
+  B7 = (static_cast<uint32_t>(this->UP) - B3) * (50000 >> BMP180_MODE);
   if (B7 < 0x80000000)
   {
     p = (B7 * 2) / B4;
