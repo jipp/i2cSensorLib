@@ -13,7 +13,7 @@
 class BMP180 : public Sensor
 {
 public:
-  BMP180(byte sensorAddress = BMP180_ADDRESS, byte sensorRegister = BMP180_ID_REGISTER, byte sensorID = BMP180_ID);
+  explicit BMP180(byte sensorAddress = BMP180_ADDRESS, byte sensorRegister = BMP180_ID_REGISTER, byte sensorID = BMP180_ID);
   void begin() override;
   void getValues() override;
   float get(Measurement measurement) override;

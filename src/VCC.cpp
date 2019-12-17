@@ -13,9 +13,8 @@ void VCC::begin()
 
 void VCC::getValues()
 {
-  const float norm = 1000.0;
 #if defined(ESP8266)
-  voltage = static_cast<float>(ESP.getVcc()) / norm;
+  voltage = static_cast<float>(ESP.getVcc());
 #else
   voltage = NAN;
 #endif

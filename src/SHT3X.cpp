@@ -9,7 +9,9 @@ void SHT3X::begin()
 {
   this->isAvailable = this->checkSensorAvailability(this->sensorAddress);
   if (this->isAvailable)
+  {
     reset();
+  }
 }
 
 void SHT3X::getValues()
