@@ -113,7 +113,7 @@ void BMP180::readUncompensatedPressure()
   LSB = readRegister8(sensorAddress, BMP180_Register::out_lsb);
   XLSB = readRegister8(sensorAddress, BMP180_Register::out_xlsb);
 
-  UP = ((MSB << 16U) | (LSB << 8U) | XLSB) >> (8U - mode);
+  UP = ((static_cast<int32_t>(MSB) << 16U) | (LSB << 8U) | XLSB) >> (8U - mode);
 }
 
 float BMP180::calculateTrueTemperature()

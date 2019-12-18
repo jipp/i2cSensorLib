@@ -1,8 +1,6 @@
 #ifndef SHT3X_HPP
 #define SHT3X_HPP
 
-#include <array>
-
 #include <Arduino.h>
 #include <Sensor.hpp>
 #include <Wire.h>
