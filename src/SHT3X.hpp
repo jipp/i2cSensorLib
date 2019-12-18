@@ -1,24 +1,15 @@
 #ifndef SHT3X_HPP
 #define SHT3X_HPP
 
+#include <array>
+
 #include <Arduino.h>
 #include <Sensor.hpp>
 #include <Wire.h>
 
-#define SHT3X_ADDRESS 0x44
-#define SHT3X_MODE H_REPEATABILITY_CLOCK_STRETCHING
-
-class SHT3X : public Sensor
+class SHT3X_Mode
 {
 public:
-  SHT3X(byte sensorAddress = SHT3X_ADDRESS);
-  void begin() override;
-  void getValues() override;
-  float get(Measurement measurement) override;
-
-private:
-  float temperature;
-  float humidity;
   enum Mode
   {
     H_REPEATABILITY_CLOCK_STRETCHING = 0x2C06, // 15ms
@@ -26,7 +17,15 @@ private:
     L_REPEATABILITY_CLOCK_STRETCHING = 0x2C10, // 6ms
     H_REPEATABILITY = 0x2400,                  // 15ms
     M_REPEATABILITY = 0x240B,                  // 6ms
-    L_REPEATABILITY = 0x2416,                  // 6ms
+    L_REPEATABILITY = 0x2416                   // 6ms
+  };
+};
+
+class SHT3X_Register
+{
+public:
+  enum Value
+  {
     READ_OUT_OF_STATUS_REGISTER = 0xF32D,
     CLEAR_STATUS = 0x3041,
     BREAK = 0x3093,
@@ -34,8 +33,25 @@ private:
     HEATER_ENABLE = 0x306D,
     HEATRER_DISABLED = 0x3066,
   };
+};
+
+class SHT3X : public Sensor
+{
+public:
+  SHT3X();
+  explicit SHT3X(uint8_t sensorAddress);
+  void begin() override;
+  void getValues() override;
+  float get(Measurement measurement) override;
+
+private:
+  const uint8_t defaultSensorAddress = 0x44;
+  uint8_t sensorAddress = defaultSensorAddress;
+  const SHT3X_Mode::Mode mode = SHT3X_Mode::H_REPEATABILITY_CLOCK_STRETCHING;
+  float temperature = 0.0;
+  float humidity = 0.0;
   void reset();
-  void wait(uint32_t Mode);
+  void wait(SHT3X_Mode::Mode mode);
 };
 
 #endif

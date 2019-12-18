@@ -75,7 +75,7 @@ public:
 private:
   const uint8_t defaultSensorAddress = 0x77;
   uint8_t sensorAddress = defaultSensorAddress;
-  const int8_t id = 0x55;
+  const uint8_t id = 0x55;
   const BME180_Mode::OSS mode = BME180_Mode::ULTRA_LOW_POWER;
   float temperature = 0.0;
   float pressure = 0.0;
