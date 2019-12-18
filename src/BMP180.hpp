@@ -5,38 +5,49 @@
 #include <Sensor.hpp>
 #include <Wire.h>
 
-#define BMP180_ADDRESS 0x77
-#define BMP180_ID_REGISTER 0xD0
-#define BMP180_ID 0x55
-#define BMP180_MODE ULTRA_HIGH_RESOLUTION
-
-class BMP180 : public Sensor
+class BME180_Mode
 {
 public:
-  explicit BMP180(byte sensorAddress = BMP180_ADDRESS, byte sensorRegister = BMP180_ID_REGISTER, byte sensorID = BMP180_ID);
-  void begin() override;
-  void getValues() override;
-  float get(Measurement measurement) override;
-
-private:
-  float temperature;
-  float pressure;
-  enum Mode
+  enum OSS
   {
     ULTRA_LOW_POWER = 0,      // 4.5ms
     STANDARD = 1,             // 7.5ms
     HIGH_RESOLUTION = 2,      // 13.5ms
     ULTRA_HIGH_RESOLUTION = 3 // 25.5ms
   };
-  enum Measurements
+};
+
+class BMP180_Register
+{
+public:
+  enum Value
   {
-    TEMPERATURE = 0x2E,   // 4.5ms
-    PRESSURE_OSS0 = 0x34, // 4.5ms
-    PRESSURE_OSS1 = 0x74, // 7.5ms
-    PRESSURE_OSS2 = 0xB4, // 13.5ms
-    PRESSURE_OSS3 = 0xF4, // 25.5ms
+    chip_id = 0xD0, // 0x55 fixed
+    soft = 0xE0,    // 0xB6 soft reset: 0xB6
+    ctrl_meas = 0xF4,
+    out_msb = 0xF6,
+    out_lsb = 0xF7,
+    out_xlsb = 0xF8
   };
-  enum CalibrationCoefficientsRegister
+};
+
+class BMP180_RegisterValue
+{
+public:
+  enum Measurement
+  {
+    temperature = 0x2E,
+    OSS0 = 0x34,
+    OSS1 = 0x74,
+    OSS2 = 0xB4,
+    OSS3 = 0xF4
+  };
+};
+
+class BME180_Calibration
+{
+public:
+  enum Coefficient
   {
     REGISTER_AC1 = 0xAA,
     REGISTER_AC2 = 0xAC,
@@ -50,24 +61,43 @@ private:
     REGISTER_MC = 0xBC,
     REGISTER_MD = 0xBE
   };
+};
+
+class BMP180 : public Sensor
+{
+public:
+  BMP180();
+  explicit BMP180(uint8_t address);
+  void begin() override;
+  void getValues() override;
+  float get(Measurement measurement) override;
+
+private:
+  const uint8_t defaultSensorAddress = 0x77;
+  uint8_t sensorAddress = defaultSensorAddress;
+  const int8_t id = 0x55;
+  const BME180_Mode::OSS mode = BME180_Mode::ULTRA_LOW_POWER;
+  float temperature = 0.0;
+  float pressure = 0.0;
   struct CalibrationCoefficients
   {
-    int16_t ac1;
-    int16_t ac2;
-    int16_t ac3;
-    uint16_t ac4;
-    uint16_t ac5;
-    uint16_t ac6;
-    int16_t b1;
-    int16_t b2;
-    int16_t mb;
-    int16_t mc;
-    int16_t md;
+    int16_t ac1 = 0;
+    int16_t ac2 = 0;
+    int16_t ac3 = 0;
+    uint16_t ac4 = 0;
+    uint16_t ac5 = 0;
+    uint16_t ac6 = 0;
+    int16_t b1 = 0;
+    int16_t b2 = 0;
+    int16_t mb = 0;
+    int16_t mc = 0;
+    int16_t md = 0;
   } calibrationCoefficients;
-  int32_t UT;
-  int32_t UP;
-  int32_t B5;
-  void wait(uint16_t Mode);
+  int32_t UT = 0;
+  int32_t UP = 0;
+  int32_t B5 = 0;
+  void conversionTime(BME180_Mode::OSS mode);
+  uint16_t controlRegisterValue(BME180_Mode::OSS mode);
   void readCalibrationData();
   void readUncompensatedTemperature();
   void readUncompensatedPressure();
