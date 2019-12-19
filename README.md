@@ -15,6 +15,7 @@ The library has the goal to provide the same command syntax for different i2c co
 - [ ] CCS811 (digital gas sensor for monitoring indoor air quality)
 - [X] SHT3X (digital humidity and temperature sensor)
 - [X] dummy (simulate values for temperature, humidity and presure)
+- [ ] add tof sensor
 
 ## needed libraries
  * Wire.h
