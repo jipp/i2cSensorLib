@@ -18,12 +18,10 @@ void SHT3X::begin()
 
 void SHT3X::getValues()
 {
-uint8_t data1 = 0;
-uint8_t data2 = 0;
-uint8_t data3 = 0;
-uint8_t data4 = 0;
-uint8_t data5 = 0;
-uint8_t data6 = 0;
+  uint8_t data1 = 0;
+  uint8_t data2 = 0;
+  uint8_t data4 = 0;
+  uint8_t data5 = 0;
 
   writeRegister16(sensorAddress, mode);
   wait(mode);
@@ -33,14 +31,14 @@ uint8_t data6 = 0;
   {
     data1 = static_cast<uint8_t>(Wire.read());
     data2 = static_cast<uint8_t>(Wire.read());
-    data3 = static_cast<uint8_t>(Wire.read());
+    Wire.read();
     data4 = static_cast<uint8_t>(Wire.read());
     data5 = static_cast<uint8_t>(Wire.read());
-    data6 = static_cast<uint8_t>(Wire.read());
+    Wire.read();
   }
 
-  temperature = 175.0F * ((data1 * 256.0F) + data2) / 65535.0F - 45.0F;
-  humidity = 100.0F * ((data4 * 256.0F) + data5) / 65535.0F;
+  temperature = 175.0F * static_cast<float>((data1 << 8U) + data2) / 65535.0F - 45.0F;
+  humidity = 100.0F * static_cast<float>((data4 << 8U) + data5) / 65535.0F;
 }
 
 float SHT3X::get(Measurement measurement)
