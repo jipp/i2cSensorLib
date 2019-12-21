@@ -1,54 +1,50 @@
-#include <BH1750.h>
+#include <BH1750.hpp>
 
-BH1750::BH1750(byte sensorAddress)
+BH1750::BH1750() = default;
+
+BH1750::BH1750(uint8_t address)
 {
-  this->sensorAddress = sensorAddress;
+  sensorAddress = address;
 }
 
 void BH1750::begin()
 {
-  this->isAvailable = this->checkSensorAvailability(this->sensorAddress);
+  isAvailable = checkSensorAvailability(sensorAddress);
 }
 
 void BH1750::getValues()
 {
-  writeRegister8(this->sensorAddress, BH1750_MODE);
-  wait(BH1750_MODE);
-
-  this->illuminance = readRegister16(this->sensorAddress);
+  writeRegister8(sensorAddress, sensorMode);
+  wait(sensorMode);
+  illuminance = readRegister16(sensorAddress);
 }
 
-void BH1750::wait(uint16_t Mode)
+void BH1750::wait(BH1750_Instruction::Opecode instruction)
 {
-  switch (Mode)
+  switch (instruction)
   {
-  case CONTINUOUSLY_H_RESOLUTION_MODE:
-    delayMicroseconds(120);
+  case BH1750_Instruction::Continuously_H_Resolution_Mode:
+  case BH1750_Instruction::One_Time_H_Resolution_Mode:
+    delayMicroseconds(BH1750_Measurement_Mode::H_Resolution_Mode);
     break;
-  case CONTINUOUSLY_H_RESOLUTION_MODE2:
-    delayMicroseconds(120);
+  case BH1750_Instruction::Continuously_H_Resolution_Mode2:
+  case BH1750_Instruction::One_Time_H_Resolution_Mode2:
+    delayMicroseconds(BH1750_Measurement_Mode::H_Resolution_Mode2);
     break;
-  case CONTINUOUSLY_L_RESOLUTION_MODE:
-    delayMicroseconds(16);
+  case BH1750_Instruction::Continuously_L_Resolution_Mode:
+  case BH1750_Instruction::One_Time_L_Resolution_Mode:
+    delayMicroseconds(BH1750_Measurement_Mode::L_Resolution_Mode);
     break;
-  case ONE_TIME_H_RESOLUTION_MODE:
-    delayMicroseconds(120);
-    break;
-  case ONE_TIME_H_RESOLUTION_MODE2:
-    delayMicroseconds(120);
-    break;
-  case ONE_TIME_L_RESOLUTION_MODE:
-    delayMicroseconds(16);
-    break;
-  };
+  default:;
+  }
 }
 
-float BH1750::get(uint8_t Measurement)
+float BH1750::get(Measurement measurement)
 {
-  switch (Measurement)
+  switch (measurement)
   {
-  case ILLUMINANCE_MEASUREMENT:
-    return this->illuminance;
+  case Measurement::ILLUMINANCE:
+    return illuminance;
   default:
     return NAN;
   }

@@ -1,36 +1,33 @@
-#include <Sensor.h>
+#include <Sensor.hpp>
 
-bool Sensor::checkSensorAvailability(byte sensorAddress)
+bool Sensor::checkSensorAvailability(uint8_t sensorAddress)
 {
-  byte transmissionStatus;
+  uint8_t transmissionStatus;
 
   Wire.beginTransmission(sensorAddress);
   transmissionStatus = Wire.endTransmission();
 
-  return transmissionStatus == 0 ? true : false;
+  return (transmissionStatus == 0);
 }
 
-bool Sensor::checkSensorAvailability(byte sensorAddress, byte registerAddress, byte value)
+bool Sensor::checkSensorAvailability(uint8_t sensorAddress, uint8_t registerAddress, uint8_t value)
 {
-  if (this->checkSensorAvailability(sensorAddress))
+  if (checkSensorAvailability(sensorAddress))
   {
-    if (value == this->readRegister8(sensorAddress, registerAddress))
-    {
-      return true;
-    }
-  };
+    return (value == readRegister8(sensorAddress, registerAddress));
+  }
 
   return false;
 }
 
-void Sensor::writeRegister8(byte sensorAddress, byte registerAddress)
+void Sensor::writeRegister8(uint8_t sensorAddress, uint8_t registerAddress)
 {
   Wire.beginTransmission(sensorAddress);
   Wire.write(registerAddress);
   Wire.endTransmission();
 }
 
-void Sensor::writeRegister8(byte sensorAddress, byte registerAddress, byte registerValue)
+void Sensor::writeRegister8(uint8_t sensorAddress, uint8_t registerAddress, uint8_t registerValue)
 {
   Wire.beginTransmission(sensorAddress);
   Wire.write(registerAddress);
@@ -38,91 +35,96 @@ void Sensor::writeRegister8(byte sensorAddress, byte registerAddress, byte regis
   Wire.endTransmission();
 }
 
-void Sensor::writeRegister16(byte sensorAddress, uint16_t registerAddress)
+void Sensor::writeRegister16(uint8_t sensorAddress, uint16_t registerAddress)
 {
   Wire.beginTransmission(sensorAddress);
-  Wire.write(registerAddress >> 8);
-  Wire.write(registerAddress & 0xFF);
+  Wire.write(registerAddress >> 8U);
+  Wire.write(registerAddress & 0x0FU);
   Wire.endTransmission();
 }
 
-byte Sensor::readRegister8(byte sensorAddress)
+uint8_t Sensor::readRegister8(uint8_t sensorAddress)
 {
-  byte registerValue = 0x00;
+  uint8_t registerValue = 0x00;
 
-  Wire.requestFrom((int)sensorAddress, 1);
+  Wire.requestFrom(static_cast<int>(sensorAddress), 1);
+
   if (Wire.available() == 1)
   {
-    registerValue = Wire.read();
+    registerValue = static_cast<uint8_t>(Wire.read());
   }
 
   return registerValue;
 }
 
-byte Sensor::readRegister8(byte sensorAddress, byte registerAddress)
+uint8_t Sensor::readRegister8(uint8_t sensorAddress, uint8_t registerAddress)
 {
-  byte registerValue = 0x00;
+  uint8_t registerValue = 0x00;
 
   Wire.beginTransmission(sensorAddress);
   Wire.write(registerAddress);
   Wire.endTransmission();
-  Wire.requestFrom((int)sensorAddress, 1);
+  Wire.requestFrom(static_cast<int>(sensorAddress), 1);
+
   if (Wire.available() == 1)
   {
-    registerValue = Wire.read();
+    registerValue = static_cast<uint8_t>(Wire.read());
   }
 
   return registerValue;
 }
 
-uint16_t Sensor::readRegister16(byte sensorAddress)
+uint16_t Sensor::readRegister16(uint8_t sensorAddress)
 {
   uint16_t registerValue = 0;
 
-  Wire.requestFrom((int)sensorAddress, 2);
+  Wire.requestFrom(static_cast<int>(sensorAddress), 2);
+
   if (Wire.available() == 2)
   {
-    registerValue = Wire.read();
-    registerValue <<= 8;
-    registerValue |= Wire.read();
+    registerValue = static_cast<uint8_t>(Wire.read());
+    registerValue <<= 8U;
+    registerValue |= static_cast<uint8_t>(Wire.read());
   }
 
   return registerValue;
 }
 
-uint16_t Sensor::readRegister16(byte sensorAddress, byte registerAddress)
+uint16_t Sensor::readRegister16(uint8_t sensorAddress, uint8_t registerAddress)
 {
   uint16_t registerValue = 0x00;
 
   Wire.beginTransmission(sensorAddress);
   Wire.write(registerAddress);
   Wire.endTransmission();
-  Wire.requestFrom((int)sensorAddress, 2);
+  Wire.requestFrom(static_cast<int>(sensorAddress), 2);
+
   if (Wire.available() == 2)
   {
-    registerValue = Wire.read();
-    registerValue <<= 8;
-    registerValue |= Wire.read();
+    registerValue = static_cast<uint8_t>(Wire.read());
+    registerValue <<= 8U;
+    registerValue |= static_cast<uint8_t>(Wire.read());
   }
 
   return registerValue;
 }
 
-uint32_t Sensor::readRegister24(byte sensorAddress, byte registerAddress)
+uint32_t Sensor::readRegister24(uint8_t sensorAddress, uint8_t registerAddress)
 {
   uint32_t registerValue = 0x00;
 
   Wire.beginTransmission(sensorAddress);
   Wire.write(registerAddress);
   Wire.endTransmission();
-  Wire.requestFrom((int)sensorAddress, 3);
+  Wire.requestFrom(static_cast<int>(sensorAddress), 3);
+
   if (Wire.available() == 3)
   {
-    registerValue = Wire.read();
-    registerValue <<= 8;
-    registerValue |= Wire.read();
-    registerValue <<= 8;
-    registerValue |= Wire.read();
+    registerValue = static_cast<uint8_t>(Wire.read());
+    registerValue <<= 8U;
+    registerValue |= static_cast<uint8_t>(Wire.read());
+    registerValue <<= 8U;
+    registerValue |= static_cast<uint8_t>(Wire.read());
   }
 
   return registerValue;
