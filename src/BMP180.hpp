@@ -1,7 +1,7 @@
 #ifndef BMP180_HPP
 #define BMP180_HPP
 
-// TODO validate with sensor
+// TODO (jipp) validate with sensor
 
 #include <Arduino.h>
 #include <Sensor.hpp>

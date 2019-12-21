@@ -1,7 +1,7 @@
 #ifndef SHT3X_HPP
 #define SHT3X_HPP
 
-// TODO validate with sensor
+// TODO (jipp) validate with sensor
 
 #include <Arduino.h>
 #include <Sensor.hpp>

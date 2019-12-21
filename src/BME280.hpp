@@ -1,7 +1,7 @@
 #ifndef BME280_HPP
 #define BME280_HPP
 
-// TODO bulk read for register values
+// TODO (jipp) bulk read for register values
 
 #include <Arduino.h>
 #include <Sensor.hpp>
