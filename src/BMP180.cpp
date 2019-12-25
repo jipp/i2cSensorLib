@@ -39,10 +39,10 @@ void BMP180::conversionTime(BME180_Mode::OSS mode)
   switch (mode)
   {
   case BME180_Mode::ULTRA_LOW_POWER:
-    delayMicroseconds(450);
+    delayMicroseconds(4500);
     break;
   case BME180_Mode::STANDARD:
-    delayMicroseconds(750);
+    delayMicroseconds(7500);
     break;
   case BME180_Mode::HIGH_RESOLUTION:
     delayMicroseconds(13500);
@@ -106,7 +106,7 @@ void BMP180::readUncompensatedPressure()
   uint8_t LSB;
   uint8_t XLSB;
 
-  writeRegister8(sensorAddress, BMP180_Register::ctrl_meas, controlRegisterValue(mode) | (mode << 6U));
+  writeRegister8(sensorAddress, BMP180_Register::ctrl_meas, controlRegisterValue(mode) + (mode << 6U));
   conversionTime(mode);
 
   MSB = readRegister8(sensorAddress, BMP180_Register::out_msb);
