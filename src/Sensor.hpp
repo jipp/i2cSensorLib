@@ -1,6 +1,8 @@
 #ifndef SENSOR_HPP
 #define SENSOR_HPP
 
+// (jipp) add set method for mode selection
+
 #include <Arduino.h>
 #include <Wire.h>
 

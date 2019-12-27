@@ -16,7 +16,7 @@ The library has the goal to provide the same command syntax for different i2c co
 - [X] dummy (simulate values for light intensity, temperature, humidity and presure)
 - [X] memory (display free heap of esp8266/esp32)
 - [ ] CCS811 (digital gas sensor for monitoring indoor air quality)
-- [ ] add tof sensor
+- [ ] tof sensor (discance sensor)
 
 ## needed libraries
  * Wire.h
