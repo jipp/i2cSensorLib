@@ -11,6 +11,11 @@ void VCC::begin()
 #endif
 }
 
+bool VCC::isReady()
+{
+  return true;
+}
+
 void VCC::getValues()
 {
 #if defined(ESP8266)

@@ -10,6 +10,11 @@ void Dummy::begin()
     isAvailable = true;
 }
 
+bool Dummy::isReady()
+{
+  return true;
+}
+
 void Dummy::getValues()
 {
     const int32_t temperatureLow = -2000;

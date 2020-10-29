@@ -1,5 +1,7 @@
 #include <SHT3X.hpp>
 
+// TODO (jipp) avoid delay statements
+
 SHT3X::SHT3X() = default;
 
 SHT3X::SHT3X(uint8_t address)
@@ -14,6 +16,11 @@ void SHT3X::begin()
   {
     reset();
   }
+}
+
+bool SHT3X::isReady()
+{
+  return true;
 }
 
 void SHT3X::getValues()

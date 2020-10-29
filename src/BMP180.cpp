@@ -1,5 +1,7 @@
 #include <BMP180.hpp>
 
+// TODO (jipp) avoid delay statements
+
 BMP180::BMP180() = default;
 
 BMP180::BMP180(uint8_t address)
@@ -11,6 +13,11 @@ void BMP180::begin()
 {
   isAvailable = checkSensorAvailability(sensorAddress, BMP180_Register::chip_id, id);
   readCalibrationData();
+}
+
+bool BMP180::isReady()
+{
+  return true;
 }
 
 void BMP180::getValues()

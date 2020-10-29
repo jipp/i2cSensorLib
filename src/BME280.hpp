@@ -154,6 +154,7 @@ public:
   BME280();
   explicit BME280(uint8_t address);
   void begin() override;
+  bool isReady() override;
   void getValues() override;
   float get(Measurement measurement) override;
 

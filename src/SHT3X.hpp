@@ -39,6 +39,7 @@ public:
   SHT3X();
   explicit SHT3X(uint8_t sensorAddress);
   void begin() override;
+  bool isReady() override;
   void getValues() override;
   float get(Measurement measurement) override;
 

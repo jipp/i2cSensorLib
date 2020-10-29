@@ -9,6 +9,7 @@ class VCC : public Sensor
 public:
   VCC();
   void begin() override;
+  bool isReady() override;
   void getValues() override;
   float get(Measurement measurement) override;
 

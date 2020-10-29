@@ -9,6 +9,7 @@ class Memory : public Sensor
 public:
   Memory();
   void begin() override;
+  bool isReady() override;
   void getValues() override;
   float get(Measurement measurement) override;
 

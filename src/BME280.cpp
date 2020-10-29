@@ -1,5 +1,7 @@
 #include <BME280.hpp>
 
+// TODO (jipp) avoid delay statements
+
 BME280::BME280() = default;
 
 BME280::BME280(uint8_t address)
@@ -15,6 +17,11 @@ void BME280::begin()
     readCompensationData();
     setParameter();
   }
+}
+
+bool BME280::isReady()
+{
+  return true;
 }
 
 void BME280::getValues()

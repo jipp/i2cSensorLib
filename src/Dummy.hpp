@@ -9,6 +9,7 @@ class Dummy : public Sensor
 public:
   Dummy();
   void begin() override;
+  bool isReady() override;
   void getValues() override;
   float get(Measurement measurement) override;
 

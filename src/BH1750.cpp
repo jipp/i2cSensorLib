@@ -1,5 +1,7 @@
 #include <BH1750.hpp>
 
+// TODO (jipp) avoid delay statements
+
 BH1750::BH1750() = default;
 
 BH1750::BH1750(uint8_t address)
@@ -10,6 +12,11 @@ BH1750::BH1750(uint8_t address)
 void BH1750::begin()
 {
   isAvailable = checkSensorAvailability(sensorAddress);
+}
+
+bool BH1750::isReady()
+{
+  return true;
 }
 
 void BH1750::getValues()

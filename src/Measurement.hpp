@@ -8,7 +8,8 @@ enum class Measurement
     HUMIDITY,
     PRESSURE,
     TEMPERATURE,
-    ILLUMINANCE
+    ILLUMINANCE,
+    CO2
 };
 
 #endif

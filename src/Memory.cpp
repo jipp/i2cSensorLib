@@ -13,6 +13,11 @@ void Memory::begin()
 #endif
 }
 
+bool Memory::isReady()
+{
+  return true;
+}
+
 void Memory::getValues()
 {
 #if defined(ESP32)

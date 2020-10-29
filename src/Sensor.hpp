@@ -13,6 +13,7 @@ class Sensor
 public:
   bool isAvailable = false;
   virtual void begin() = 0;
+  virtual bool isReady() = 0;
   virtual void getValues() = 0;
   virtual float get(Measurement measurement) = 0;
   bool checkSensorAvailability(uint8_t sensorAddress);

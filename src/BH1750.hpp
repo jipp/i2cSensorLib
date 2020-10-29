@@ -39,6 +39,7 @@ public:
   BH1750();
   explicit BH1750(uint8_t address);
   void begin() override;
+  bool isReady() override;
   void getValues() override;
   float get(Measurement measurement) override;
 
