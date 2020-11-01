@@ -1,5 +1,4 @@
 #include <SCD30.hpp>
-#include <iostream>
 
 SCD30::SCD30() = default;
 
