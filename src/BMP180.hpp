@@ -68,10 +68,10 @@ class BMP180 : public Sensor
 public:
   BMP180();
   explicit BMP180(uint8_t address);
-  void begin() override;
-  bool isReady() override;
-  void getValues() override;
-  float get(Measurement measurement) override;
+  bool begin() override;
+  bool checkMeasurementAvailability() override;
+  void readMeasurement() override;
+  float getMeasurement(Measurement measurement) override;
 
 private:
   const uint8_t defaultSensorAddress = 0x77;

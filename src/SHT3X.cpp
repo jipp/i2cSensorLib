@@ -9,21 +9,29 @@ SHT3X::SHT3X(uint8_t address)
   sensorAddress = address;
 }
 
-void SHT3X::begin()
+bool SHT3X::begin()
 {
-  isAvailable = checkSensorAvailability(sensorAddress);
-  if (isAvailable)
+  isSensorAvailable = checkSensorAvailability(sensorAddress);
+
+  if (isSensorAvailable)
   {
     reset();
   }
+
+  return isSensorAvailable;
 }
 
-bool SHT3X::isReady()
+bool SHT3X::checkMeasurementAvailability()
 {
-  return true;
+  if (isSensorAvailable)
+  {
+    isMeasurementAvailable = true;
+  }
+
+  return isMeasurementAvailable;
 }
 
-void SHT3X::getValues()
+void SHT3X::readMeasurement()
 {
   uint8_t data1 = 0;
   uint8_t data2 = 0;
@@ -48,7 +56,7 @@ void SHT3X::getValues()
   humidity = 100.0F * static_cast<float>((data4 << 8U) + data5) / 65535.0F;
 }
 
-float SHT3X::get(Measurement measurement)
+float SHT3X::getMeasurement(Measurement measurement)
 {
   switch (measurement)
   {

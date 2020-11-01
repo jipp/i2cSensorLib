@@ -9,22 +9,30 @@ BME280::BME280(uint8_t address)
   sensorAddress = address;
 }
 
-void BME280::begin()
+bool BME280::begin()
 {
-  isAvailable = checkSensorAvailability(sensorAddress, BME280_Register::id, BME280_Type::BME280);
-  if (isAvailable)
+  isSensorAvailable = checkSensorAvailability(sensorAddress, BME280_Register::id, BME280_Type::BME280);
+
+  if (isSensorAvailable)
   {
     readCompensationData();
     setParameter();
   }
+
+  return isSensorAvailable;
 }
 
-bool BME280::isReady()
+bool BME280::checkMeasurementAvailability()
 {
-  return true;
+    if (isSensorAvailable)
+    {
+        isMeasurementAvailable = true;
+    }
+
+    return isMeasurementAvailable;
 }
 
-void BME280::getValues()
+void BME280::readMeasurement()
 {
   BME280_Mode::Mode mode;
 
@@ -42,7 +50,7 @@ void BME280::getValues()
   humidity = getHumidity();
 }
 
-float BME280::get(Measurement measurement)
+float BME280::getMeasurement(Measurement measurement)
 {
   switch (measurement)
   {

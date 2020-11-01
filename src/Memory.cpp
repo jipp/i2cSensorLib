@@ -2,23 +2,30 @@
 
 Memory::Memory() = default;
 
-void Memory::begin()
+bool Memory::begin()
 {
 #if defined(ESP32)
-    isAvailable = true;
+    isSensorAvailable = true;
 #elif defined(ESP8266)
-    isAvailable = true;
+    isSensorAvailable = true;
 #else
-    isAvailable = false;
+    isSensorAvailable = false;
 #endif
+
+    return isSensorAvailable;
 }
 
-bool Memory::isReady()
+bool Memory::checkMeasurementAvailability()
 {
-  return true;
+    if (isSensorAvailable)
+    {
+        isMeasurementAvailable = true;
+    }
+
+    return isMeasurementAvailable;
 }
 
-void Memory::getValues()
+void Memory::readMeasurement()
 {
 #if defined(ESP32)
     memory = ESP.getFreeHeap();
@@ -29,7 +36,7 @@ void Memory::getValues()
 #endif
 }
 
-float Memory::get(Measurement measurement)
+float Memory::getMeasurement(Measurement measurement)
 {
     switch (measurement)
     {

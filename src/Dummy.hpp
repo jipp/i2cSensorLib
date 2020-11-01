@@ -8,16 +8,17 @@ class Dummy : public Sensor
 {
 public:
   Dummy();
-  void begin() override;
-  bool isReady() override;
-  void getValues() override;
-  float get(Measurement measurement) override;
+  bool begin() override;
+  bool checkMeasurementAvailability() override;
+  void readMeasurement() override;
+  float getMeasurement(Measurement measurement) override;
 
 private:
   float temperature = 0.0;
   float pressure = 0.0;
   float humidity = 0.0;
   float illuminance = 0.0;
+  float co2 = 0.0;
 };
 
 #endif

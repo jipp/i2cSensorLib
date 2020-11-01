@@ -9,17 +9,24 @@ BH1750::BH1750(uint8_t address)
   sensorAddress = address;
 }
 
-void BH1750::begin()
+bool BH1750::begin()
 {
-  isAvailable = checkSensorAvailability(sensorAddress);
+  isSensorAvailable = checkSensorAvailability(sensorAddress);
+
+  return isSensorAvailable;
 }
 
-bool BH1750::isReady()
+bool BH1750::checkMeasurementAvailability()
 {
-  return true;
+  if (isSensorAvailable)
+  {
+    isMeasurementAvailable = true;
+  }
+
+  return isMeasurementAvailable;
 }
 
-void BH1750::getValues()
+void BH1750::readMeasurement()
 {
   writeRegister8(sensorAddress, sensorMode);
   wait(sensorMode);
@@ -46,7 +53,7 @@ void BH1750::wait(BH1750_Instruction::Opecode instruction)
   }
 }
 
-float BH1750::get(Measurement measurement)
+float BH1750::getMeasurement(Measurement measurement)
 {
   switch (measurement)
   {

@@ -8,10 +8,10 @@ class VCC : public Sensor
 {
 public:
   VCC();
-  void begin() override;
-  bool isReady() override;
-  void getValues() override;
-  float get(Measurement measurement) override;
+  bool begin() override;
+  bool checkMeasurementAvailability() override;
+  void readMeasurement() override;
+  float getMeasurement(Measurement measurement) override;
 
 private:
   float voltage = 0.0;

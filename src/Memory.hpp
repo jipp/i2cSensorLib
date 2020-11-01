@@ -8,10 +8,10 @@ class Memory : public Sensor
 {
 public:
   Memory();
-  void begin() override;
-  bool isReady() override;
-  void getValues() override;
-  float get(Measurement measurement) override;
+  bool begin() override;
+  bool checkMeasurementAvailability() override;
+  void readMeasurement() override;
+  float getMeasurement(Measurement measurement) override;
 
 private:
   uint32_t memory = 0;

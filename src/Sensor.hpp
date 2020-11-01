@@ -11,11 +11,12 @@
 class Sensor
 {
 public:
-  bool isAvailable = false;
-  virtual void begin() = 0;
-  virtual bool isReady() = 0;
-  virtual void getValues() = 0;
-  virtual float get(Measurement measurement) = 0;
+  bool isSensorAvailable = false;
+  bool isMeasurementAvailable = false;
+  virtual bool begin() = 0;
+  virtual bool checkMeasurementAvailability() = 0;
+  virtual void readMeasurement() = 0;
+  virtual float getMeasurement(Measurement measurement) = 0;
   bool checkSensorAvailability(uint8_t sensorAddress);
   bool checkSensorAvailability(uint8_t sensorAddress, uint8_t sensorIDRegister, uint8_t value);
   void writeRegister8(uint8_t sensorAddress, uint8_t registerAddress);

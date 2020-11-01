@@ -2,21 +2,28 @@
 
 VCC::VCC() = default;
 
-void VCC::begin()
+bool VCC::begin()
 {
 #if defined(ESP8266)
-  isAvailable = true;
+  isSensorAvailable = true;
 #else
-  isAvailable = false;
+  isSensorAvailable = false;
 #endif
+
+  return isSensorAvailable;
 }
 
-bool VCC::isReady()
+bool VCC::checkMeasurementAvailability()
 {
-  return true;
+  if (isSensorAvailable)
+  {
+    isMeasurementAvailable = true;
+  }
+  
+  return isMeasurementAvailable;
 }
 
-void VCC::getValues()
+void VCC::readMeasurement()
 {
 #if defined(ESP8266)
   voltage = static_cast<float>(ESP.getVcc());
@@ -25,7 +32,7 @@ void VCC::getValues()
 #endif
 }
 
-float VCC::get(Measurement measurement)
+float VCC::getMeasurement(Measurement measurement)
 {
   switch (measurement)
   {

@@ -9,18 +9,29 @@ BMP180::BMP180(uint8_t address)
   sensorAddress = address;
 }
 
-void BMP180::begin()
+bool BMP180::begin()
 {
-  isAvailable = checkSensorAvailability(sensorAddress, BMP180_Register::chip_id, id);
-  readCalibrationData();
+  isSensorAvailable = checkSensorAvailability(sensorAddress, BMP180_Register::chip_id, id);
+  
+  if (isSensorAvailable)
+  {
+    readCalibrationData();
+  }
+
+  return isSensorAvailable;
 }
 
-bool BMP180::isReady()
+bool BMP180::checkMeasurementAvailability()
 {
-  return true;
+    if (isSensorAvailable)
+    {
+        isMeasurementAvailable = true;
+    }
+
+    return isMeasurementAvailable;
 }
 
-void BMP180::getValues()
+void BMP180::readMeasurement()
 {
   readUncompensatedTemperature();
   readUncompensatedPressure();
@@ -28,7 +39,7 @@ void BMP180::getValues()
   pressure = calculateTruePressure();
 }
 
-float BMP180::get(Measurement measurement)
+float BMP180::getMeasurement(Measurement measurement)
 {
   switch (measurement)
   {
