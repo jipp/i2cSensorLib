@@ -17,6 +17,8 @@ bool Memory::begin()
 
 bool Memory::checkMeasurementAvailability()
 {
+    isMeasurementAvailable = false;
+
     if (isSensorAvailable)
     {
         isMeasurementAvailable = true;
@@ -25,15 +27,26 @@ bool Memory::checkMeasurementAvailability()
     return isMeasurementAvailable;
 }
 
-void Memory::readMeasurement()
+bool Memory::readMeasurement()
 {
+    if (checkMeasurementAvailability())
+    {
 #if defined(ESP32)
-    memory = ESP.getFreeHeap();
+        memory = ESP.getFreeHeap();
+
+        return true;
 #elif defined(ESP8266)
-    memory = ESP.getFreeHeap();
+        memory = ESP.getFreeHeap();
+
+        return true;
 #else
-    memory = 0;
+        memory = 0;
+
+        return false;
 #endif
+    }
+
+    return false;
 }
 
 float Memory::getMeasurement(Measurement measurement)

@@ -15,21 +15,32 @@ bool VCC::begin()
 
 bool VCC::checkMeasurementAvailability()
 {
+  isMeasurementAvailable = false;
+
   if (isSensorAvailable)
   {
     isMeasurementAvailable = true;
   }
-  
+
   return isMeasurementAvailable;
 }
 
-void VCC::readMeasurement()
+bool VCC::readMeasurement()
 {
+  if (checkMeasurementAvailability())
+  {
 #if defined(ESP8266)
-  voltage = static_cast<float>(ESP.getVcc());
+    voltage = static_cast<float>(ESP.getVcc());
+
+    return true;
 #else
-  voltage = NAN;
+    voltage = NAN;
+
+    return false;
 #endif
+  }
+
+  return false;
 }
 
 float VCC::getMeasurement(Measurement measurement)

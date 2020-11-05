@@ -24,30 +24,41 @@ bool BME280::begin()
 
 bool BME280::checkMeasurementAvailability()
 {
-    if (isSensorAvailable)
-    {
-        isMeasurementAvailable = true;
-    }
+  isMeasurementAvailable = false;
 
-    return isMeasurementAvailable;
+  if (isSensorAvailable)
+  {
+    isMeasurementAvailable = true;
+  }
+
+  return isMeasurementAvailable;
 }
 
-void BME280::readMeasurement()
+bool BME280::readMeasurement()
 {
-  BME280_Mode::Mode mode;
+  BME280_Mode::Mode mode = BME280_Mode::Normal_mode;
 
-  mode = getMode();
-  if (mode == BME280_Mode::Sleep_mode or mode == BME280_Mode::Forced_mode)
+  if (checkMeasurementAvailability())
   {
-    setMode(BME280_Mode::Forced_mode);
-    while (isMeasuring())
+    mode = getMode();
+
+    if (mode == BME280_Mode::Sleep_mode or mode == BME280_Mode::Forced_mode)
     {
-      delay(1);
+      setMode(BME280_Mode::Forced_mode);
+      while (isMeasuring())
+      {
+        delay(1);
+      }
     }
+
+    temperature = getTemperature();
+    pressure = getPressure();
+    humidity = getHumidity();
+
+    return true;
   }
-  temperature = getTemperature();
-  pressure = getPressure();
-  humidity = getHumidity();
+
+  return false;
 }
 
 float BME280::getMeasurement(Measurement measurement)
@@ -67,7 +78,7 @@ float BME280::getMeasurement(Measurement measurement)
 
 bool BME280::isMeasuring()
 {
-  uint8_t status;
+  uint8_t status = 0;
 
   status = readRegister8(sensorAddress, BME280_Register::status);
 
@@ -138,8 +149,8 @@ void BME280::readCompensationData()
 
 void BME280::setStandby(uint8_t t_sb)
 {
-  uint8_t data;
-  BME280_Mode::Mode originalMode;
+  uint8_t data = 0;
+  BME280_Mode::Mode originalMode = BME280_Mode::Normal_mode;
 
   originalMode = getMode();
   setMode(BME280_Mode::Sleep_mode);
@@ -152,8 +163,8 @@ void BME280::setStandby(uint8_t t_sb)
 
 void BME280::setFilter(uint8_t filter)
 {
-  uint8_t data;
-  BME280_Mode::Mode originalMode;
+  uint8_t data = 0;
+  BME280_Mode::Mode originalMode = BME280_Mode::Normal_mode;
 
   originalMode = getMode();
   setMode(BME280_Mode::Sleep_mode);
@@ -166,8 +177,8 @@ void BME280::setFilter(uint8_t filter)
 
 void BME280::setPressureOversampling(uint8_t osrs_p)
 {
-  uint8_t data;
-  BME280_Mode::Mode originalMode;
+  uint8_t data = 0;
+  BME280_Mode::Mode originalMode = BME280_Mode::Normal_mode;
 
   originalMode = getMode();
   setMode(BME280_Mode::Sleep_mode);
@@ -180,8 +191,8 @@ void BME280::setPressureOversampling(uint8_t osrs_p)
 
 void BME280::setTemperatureOversampling(uint8_t osrs_t)
 {
-  uint8_t data;
-  BME280_Mode::Mode originalMode;
+  uint8_t data = 0;
+  BME280_Mode::Mode originalMode = BME280_Mode::Normal_mode;
 
   originalMode = getMode();
   setMode(BME280_Mode::Sleep_mode);
@@ -194,8 +205,8 @@ void BME280::setTemperatureOversampling(uint8_t osrs_t)
 
 void BME280::setHumidityOversampling(uint8_t osrs_h)
 {
-  uint8_t data;
-  BME280_Mode::Mode originalMode;
+  uint8_t data = 0;
+  BME280_Mode::Mode originalMode = BME280_Mode::Normal_mode;
 
   originalMode = getMode();
   setMode(BME280_Mode::Sleep_mode);
@@ -208,7 +219,7 @@ void BME280::setHumidityOversampling(uint8_t osrs_h)
 
 void BME280::setMode(BME280_Mode::Mode mode)
 {
-  uint8_t data;
+  uint8_t data = 0;
 
   data = readRegister8(sensorAddress, BME280_Register::ctrl_meas);
   data &= ~((1U << 1U) | (1U << 0U));
@@ -218,7 +229,7 @@ void BME280::setMode(BME280_Mode::Mode mode)
 
 BME280_Mode::Mode BME280::getMode()
 {
-  uint8_t data;
+  uint8_t data = 0;
 
   data = readRegister8(sensorAddress, BME280_Register::ctrl_meas);
 
@@ -227,13 +238,13 @@ BME280_Mode::Mode BME280::getMode()
 
 float BME280::getTemperature()
 {
-  int32_t var1;
-  int32_t var2;
-  int32_t T;
-  uint8_t temp_msb;
-  uint8_t temp_lsb;
-  uint8_t temp_xlsb;
-  int32_t adc_T;
+  int32_t var1 = 0;
+  int32_t var2 = 0;
+  int32_t T = 0;
+  uint8_t temp_msb = 0;
+  uint8_t temp_lsb = 0;
+  uint8_t temp_xlsb = 0;
+  int32_t adc_T = 0;
 
   temp_msb = readRegister8(this->sensorAddress, BME280_Register::temp_msb);
   temp_lsb = readRegister8(this->sensorAddress, BME280_Register::temp_lsb);
@@ -251,13 +262,13 @@ float BME280::getTemperature()
 
 float BME280::getPressure()
 {
-  int64_t var1;
-  int64_t var2;
-  int64_t P;
-  uint8_t press_msb;
-  uint8_t press_lsb;
-  uint8_t press_xlsb;
-  int32_t adc_P;
+  int64_t var1 = 0;
+  int64_t var2 = 0;
+  int64_t P = 0;
+  uint8_t press_msb = 0;
+  uint8_t press_lsb = 0;
+  uint8_t press_xlsb = 0;
+  int32_t adc_P = 0;
 
   press_msb = readRegister8(this->sensorAddress, BME280_Register::press_msb);
   press_lsb = readRegister8(this->sensorAddress, BME280_Register::press_lsb);
@@ -286,10 +297,10 @@ float BME280::getPressure()
 
 float BME280::getHumidity()
 {
-  int32_t var1;
-  uint8_t hum_msb;
-  uint8_t hum_lsb;
-  int32_t adc_H;
+  int32_t var1 = 0;
+  uint8_t hum_msb = 0;
+  uint8_t hum_lsb = 0;
+  int32_t adc_H = 0;
 
   hum_msb = readRegister8(this->sensorAddress, BME280_Register::hum_msb);
   hum_lsb = readRegister8(this->sensorAddress, BME280_Register::hum_lsb);

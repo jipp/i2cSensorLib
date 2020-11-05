@@ -18,6 +18,8 @@ bool BH1750::begin()
 
 bool BH1750::checkMeasurementAvailability()
 {
+  isMeasurementAvailable = false;
+
   if (isSensorAvailable)
   {
     isMeasurementAvailable = true;
@@ -26,11 +28,18 @@ bool BH1750::checkMeasurementAvailability()
   return isMeasurementAvailable;
 }
 
-void BH1750::readMeasurement()
+bool BH1750::readMeasurement()
 {
-  writeRegister8(sensorAddress, sensorMode);
-  wait(sensorMode);
-  illuminance = readRegister16(sensorAddress);
+  if (checkMeasurementAvailability())
+  {
+    writeRegister8(sensorAddress, sensorMode);
+    wait(sensorMode);
+    illuminance = readRegister16(sensorAddress);
+
+    return true;
+  }
+
+  return false;
 }
 
 void BH1750::wait(BH1750_Instruction::Opecode instruction)

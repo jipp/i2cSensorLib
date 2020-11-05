@@ -70,7 +70,7 @@ public:
   explicit BMP180(uint8_t address);
   bool begin() override;
   bool checkMeasurementAvailability() override;
-  void readMeasurement() override;
+  bool readMeasurement() override;
   float getMeasurement(Measurement measurement) override;
 
 private:

@@ -12,7 +12,7 @@ public:
     {
         Trigger_Continouos_Measurement = 0x0010,
         Stop_Continuous_Measurement = 0x0104,
-        Set_Measurement_interval = 0x4600,
+        Set_Measurement_Interval = 0x4600,
         Get_Data_Ready_Status = 0x0202,
         Read_Measurement = 0x0300,
         Automatic_Self_Calibration = 0x5306,
@@ -29,7 +29,7 @@ public:
     explicit SCD30(uint8_t address);
     bool begin() override;
     bool checkMeasurementAvailability() override;
-    void readMeasurement() override;
+    bool readMeasurement() override;
     float getMeasurement(Measurement measurement) override;
 
 private:

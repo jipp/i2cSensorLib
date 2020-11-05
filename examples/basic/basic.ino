@@ -30,9 +30,8 @@ SCD30 scd30 = SCD30();
 void publishValues()
 {
   Serial.println();
-  if (dummy.isSensorAvailable)
+  if (dummy.readMeasurement())
   {
-    dummy.readMeasurement();
     Serial.print("Dummy:  temperature: ");
     Serial.print(dummy.getMeasurement(Measurement::TEMPERATURE));
     Serial.print(" humidity: ");
@@ -44,43 +43,37 @@ void publishValues()
     Serial.print(" co2: ");
     Serial.println(dummy.getMeasurement(Measurement::CO2));
   }
-  if (vcc.isSensorAvailable)
+  if (vcc.readMeasurement())
   {
-    vcc.readMeasurement();
     Serial.print("VCC:    voltage: ");
     Serial.println(vcc.getMeasurement(Measurement::VOLTAGE));
   }
-  if (memory.isSensorAvailable)
+  if (memory.readMeasurement())
   {
-    memory.readMeasurement();
     Serial.print("Memory: byte: ");
     Serial.println(memory.getMeasurement(Measurement::MEMORY));
   }
-  if (bh1750.isSensorAvailable)
+  if (bh1750.readMeasurement())
   {
-    bh1750.readMeasurement();
     Serial.print("BH1750: illuminance: ");
     Serial.println(bh1750.getMeasurement(Measurement::ILLUMINANCE));
   }
-  if (sht3x.isSensorAvailable)
+  if (sht3x.readMeasurement())
   {
-    sht3x.readMeasurement();
     Serial.print("SHT3X:  temperature: ");
     Serial.print(sht3x.getMeasurement(Measurement::TEMPERATURE));
     Serial.print(" humidity: ");
     Serial.println(sht3x.getMeasurement(Measurement::HUMIDITY));
   }
-  if (bmp180.isSensorAvailable)
+  if (bmp180.readMeasurement())
   {
-    bmp180.readMeasurement();
     Serial.print("BMP180: temperature: ");
     Serial.print(bmp180.getMeasurement(Measurement::TEMPERATURE));
     Serial.print(" pressure: ");
     Serial.println(bmp180.getMeasurement(Measurement::PRESSURE));
   }
-  if (bme280.isSensorAvailable)
+  if (bme280.readMeasurement())
   {
-    bme280.readMeasurement();
     Serial.print("BME280: temperature: ");
     Serial.print(bme280.getMeasurement(Measurement::TEMPERATURE));
     Serial.print(" humidity: ");
@@ -88,9 +81,8 @@ void publishValues()
     Serial.print(" pressure: ");
     Serial.println(bme280.getMeasurement(Measurement::PRESSURE));
   }
-  if (scd30.isSensorAvailable)
+  if (scd30.readMeasurement())
   {
-    scd30.readMeasurement();
     Serial.print("SCD30: temperature: ");
     Serial.print(scd30.getMeasurement(Measurement::TEMPERATURE));
     Serial.print(" humidity: ");
@@ -119,6 +111,6 @@ void loop()
   while (true)
   {
     publishValues();
-    delay(2000);
+    delay(2500);
   }
 }
