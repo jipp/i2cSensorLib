@@ -38,9 +38,10 @@ class SHT3X : public Sensor
 public:
   SHT3X();
   explicit SHT3X(uint8_t sensorAddress);
-  void begin() override;
-  void getValues() override;
-  float get(Measurement measurement) override;
+  bool begin() override;
+  bool checkMeasurementAvailability() override;
+  bool readMeasurement() override;
+  float getMeasurement(Measurement measurement) override;
 
 private:
   const uint8_t defaultSensorAddress = 0x44;

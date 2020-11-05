@@ -5,9 +5,14 @@
 #include <BMP180.hpp>
 #include <Dummy.hpp>
 #include <Memory.hpp>
+#include <SCD30.hpp>
 #include <SHT3X.hpp>
 #include <VCC.hpp>
 #include <Wire.h>
+
+#ifndef SPEED
+#define SPEED 460800
+#endif
 
 #if defined(ESP8266)
 ADC_MODE(ADC_VCC)
@@ -20,71 +25,76 @@ BH1750 bh1750 = BH1750();
 SHT3X sht3x = SHT3X(0x45);
 BMP180 bmp180 = BMP180();
 BME280 bme280 = BME280();
+SCD30 scd30 = SCD30();
 
 void publishValues()
 {
   Serial.println();
-  if (dummy.isAvailable)
+  if (dummy.readMeasurement())
   {
-    dummy.getValues();
     Serial.print("Dummy:  temperature: ");
-    Serial.print(dummy.get(Measurement::TEMPERATURE));
+    Serial.print(dummy.getMeasurement(Measurement::TEMPERATURE));
     Serial.print(" humidity: ");
-    Serial.print(dummy.get(Measurement::HUMIDITY));
+    Serial.print(dummy.getMeasurement(Measurement::HUMIDITY));
     Serial.print(" pressure: ");
-    Serial.print(dummy.get(Measurement::PRESSURE));
+    Serial.print(dummy.getMeasurement(Measurement::PRESSURE));
     Serial.print(" illuminance: ");
-    Serial.println(dummy.get(Measurement::ILLUMINANCE));
+    Serial.print(dummy.getMeasurement(Measurement::ILLUMINANCE));
+    Serial.print(" co2: ");
+    Serial.println(dummy.getMeasurement(Measurement::CO2));
   }
-  if (vcc.isAvailable)
+  if (vcc.readMeasurement())
   {
-    vcc.getValues();
     Serial.print("VCC:    voltage: ");
-    Serial.println(vcc.get(Measurement::VOLTAGE));
+    Serial.println(vcc.getMeasurement(Measurement::VOLTAGE));
   }
-  if (memory.isAvailable)
+  if (memory.readMeasurement())
   {
-    memory.getValues();
     Serial.print("Memory: byte: ");
-    Serial.println(memory.get(Measurement::MEMORY));
+    Serial.println(memory.getMeasurement(Measurement::MEMORY));
   }
-  if (bh1750.isAvailable)
+  if (bh1750.readMeasurement())
   {
-    bh1750.getValues();
     Serial.print("BH1750: illuminance: ");
-    Serial.println(bh1750.get(Measurement::ILLUMINANCE));
+    Serial.println(bh1750.getMeasurement(Measurement::ILLUMINANCE));
   }
-  if (sht3x.isAvailable)
+  if (sht3x.readMeasurement())
   {
-    sht3x.getValues();
     Serial.print("SHT3X:  temperature: ");
-    Serial.print(sht3x.get(Measurement::TEMPERATURE));
+    Serial.print(sht3x.getMeasurement(Measurement::TEMPERATURE));
     Serial.print(" humidity: ");
-    Serial.println(sht3x.get(Measurement::HUMIDITY));
+    Serial.println(sht3x.getMeasurement(Measurement::HUMIDITY));
   }
-  if (bmp180.isAvailable)
+  if (bmp180.readMeasurement())
   {
-    bmp180.getValues();
     Serial.print("BMP180: temperature: ");
-    Serial.print(bmp180.get(Measurement::TEMPERATURE));
+    Serial.print(bmp180.getMeasurement(Measurement::TEMPERATURE));
     Serial.print(" pressure: ");
-    Serial.println(bmp180.get(Measurement::PRESSURE));
+    Serial.println(bmp180.getMeasurement(Measurement::PRESSURE));
   }
-  if (bme280.isAvailable)
+  if (bme280.readMeasurement())
   {
-    bme280.getValues();
     Serial.print("BME280: temperature: ");
-    Serial.print(bme280.get(Measurement::TEMPERATURE));
+    Serial.print(bme280.getMeasurement(Measurement::TEMPERATURE));
     Serial.print(" humidity: ");
-    Serial.print(bme280.get(Measurement::HUMIDITY));
+    Serial.print(bme280.getMeasurement(Measurement::HUMIDITY));
     Serial.print(" pressure: ");
-    Serial.println(bme280.get(Measurement::PRESSURE));
+    Serial.println(bme280.getMeasurement(Measurement::PRESSURE));
+  }
+  if (scd30.readMeasurement())
+  {
+    Serial.print("SCD30: temperature: ");
+    Serial.print(scd30.getMeasurement(Measurement::TEMPERATURE));
+    Serial.print(" humidity: ");
+    Serial.print(scd30.getMeasurement(Measurement::HUMIDITY));
+    Serial.print(" co2: ");
+    Serial.println(scd30.getMeasurement(Measurement::CO2));
   }
 }
 
 void setup()
 {
-  Serial.begin(460800);
+  Serial.begin(SPEED);
   Wire.begin();
   dummy.begin();
   vcc.begin();
@@ -93,6 +103,7 @@ void setup()
   sht3x.begin();
   bmp180.begin();
   bme280.begin();
+  scd30.begin();
 }
 
 void loop()
@@ -100,6 +111,6 @@ void loop()
   while (true)
   {
     publishValues();
-    delay(2000);
+    delay(2500);
   }
 }

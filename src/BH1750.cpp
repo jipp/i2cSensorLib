@@ -1,5 +1,7 @@
 #include <BH1750.hpp>
 
+// TODO (jipp) avoid delay statements
+
 BH1750::BH1750() = default;
 
 BH1750::BH1750(uint8_t address)
@@ -7,16 +9,37 @@ BH1750::BH1750(uint8_t address)
   sensorAddress = address;
 }
 
-void BH1750::begin()
+bool BH1750::begin()
 {
-  isAvailable = checkSensorAvailability(sensorAddress);
+  isSensorAvailable = checkSensorAvailability(sensorAddress);
+
+  return isSensorAvailable;
 }
 
-void BH1750::getValues()
+bool BH1750::checkMeasurementAvailability()
 {
-  writeRegister8(sensorAddress, sensorMode);
-  wait(sensorMode);
-  illuminance = readRegister16(sensorAddress);
+  isMeasurementAvailable = false;
+
+  if (isSensorAvailable)
+  {
+    isMeasurementAvailable = true;
+  }
+
+  return isMeasurementAvailable;
+}
+
+bool BH1750::readMeasurement()
+{
+  if (checkMeasurementAvailability())
+  {
+    writeRegister8(sensorAddress, sensorMode);
+    wait(sensorMode);
+    illuminance = readRegister16(sensorAddress);
+
+    return true;
+  }
+
+  return false;
 }
 
 void BH1750::wait(BH1750_Instruction::Opecode instruction)
@@ -39,7 +62,7 @@ void BH1750::wait(BH1750_Instruction::Opecode instruction)
   }
 }
 
-float BH1750::get(Measurement measurement)
+float BH1750::getMeasurement(Measurement measurement)
 {
   switch (measurement)
   {
