@@ -10,11 +10,11 @@ bool Sensor::checkSensorAvailability(uint8_t sensorAddress)
   return (transmissionStatus == 0);
 }
 
-bool Sensor::checkSensorAvailability(uint8_t sensorAddress, uint8_t registerAddress, uint8_t value)
+bool Sensor::checkSensorAvailability(uint8_t sensorAddress, uint8_t sensorRegister, uint8_t sensorValue)
 {
   if (checkSensorAvailability(sensorAddress))
   {
-    return (value == readRegister8(sensorAddress, registerAddress));
+    return (sensorValue == readRegister8(sensorAddress, sensorRegister));
   }
 
   return false;

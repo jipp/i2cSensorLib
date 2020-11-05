@@ -18,7 +18,7 @@ public:
   virtual bool readMeasurement() = 0;
   virtual float getMeasurement(Measurement measurement) = 0;
   bool checkSensorAvailability(uint8_t sensorAddress);
-  bool checkSensorAvailability(uint8_t sensorAddress, uint8_t sensorRegister, uint8_t value);
+  bool checkSensorAvailability(uint8_t sensorAddress, uint8_t sensorRegister, uint8_t sensorValue);
   bool writeRegister8(uint8_t sensorAddress, uint8_t registerAddress);
   bool writeRegister8(uint8_t sensorAddress, uint8_t registerAddress, uint8_t registerValue);
   bool writeRegister16(uint8_t sensorAddress, uint16_t registerAddress);

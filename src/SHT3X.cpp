@@ -23,7 +23,6 @@ bool SHT3X::begin()
 
 bool SHT3X::checkMeasurementAvailability()
 {
-
   isMeasurementAvailable = false;
 
   if (isSensorAvailable)
@@ -42,7 +41,6 @@ bool SHT3X::readMeasurement()
   uint8_t data5 = 0;
 
   if (checkMeasurementAvailability())
-
   {
     writeRegister16(sensorAddress, mode);
     wait(mode);

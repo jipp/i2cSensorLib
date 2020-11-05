@@ -17,6 +17,7 @@ The library has the goal to provide the same command syntax for different i2c co
 - [X] memory (display free heap of esp8266/esp32)
 - [ ] CCS811 (digital gas sensor for monitoring indoor air quality)
 - [ ] tof sensor (discance sensor)
+- [X] SCD30 (digital co2, temperature and pressure sensor)
 
 ## needed libraries
  * Wire.h
