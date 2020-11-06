@@ -86,6 +86,7 @@ bool SCD30::readMeasurement()
                 break;
             default:
                 crc = crc8(bytesToCrc, 2);
+
                 if (crc != incoming)
                 {
                     return false;

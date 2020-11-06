@@ -49,9 +49,11 @@ bool Sensor::writeRegister16(uint8_t sensorAddress, uint16_t registerAddress)
 bool Sensor::writeRegister16crc(uint8_t sensorAddress, uint16_t registerAddress, uint16_t registerValue)
 {
   uint8_t data[2];
+  uint8_t crc = 0;
+
   data[0] = registerValue >> 8;
   data[1] = registerValue & 0xFF;
-  uint8_t crc = crc8(data, 2); //Calc CRC on the arguments only, not the command
+  crc = crc8(data, 2);
 
   Wire.beginTransmission(sensorAddress);
   Wire.write(registerAddress >> 8U);

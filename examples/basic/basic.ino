@@ -83,7 +83,7 @@ void publishValues()
   }
   if (scd30.readMeasurement())
   {
-    Serial.print("SCD30: temperature: ");
+    Serial.print("SCD30:  temperature: ");
     Serial.print(scd30.getMeasurement(Measurement::TEMPERATURE));
     Serial.print(" humidity: ");
     Serial.print(scd30.getMeasurement(Measurement::HUMIDITY));
