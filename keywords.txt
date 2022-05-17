@@ -6,14 +6,16 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-isAvailable	KEYWORD1
+isSensorAvailable       KEYWORD1
+isMeasurementAvailable  KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-getValues	KEYWORD2
-get     	KEYWORD2
+checkSensorAvailability KEYWORD2
+getMeasurement          KEYWORD2
+readMeasurement         KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)
